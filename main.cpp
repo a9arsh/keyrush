@@ -18,23 +18,27 @@ int main()
 
     // Background
     sf::Texture background_texture;
+    background_texture.loadFromFile("background.png");
     sf::Sprite background(background_texture);
     background.setScale(2.0, 2.0);
     background.setPosition(0, 0);
 
     // Character
     sf::Texture character_texture;
+    character_texture.loadFromFile("C:/Users/user/OneDrive/Dokumenty/Key_Rush/character.png");
     Character character(character_texture);
     character.setScale(0.6, 0.6);
     character.setPosition(800 - character.getGlobalBounds().width, 575 - character.getGlobalBounds().height);
 
     // Switch
     sf::Texture switch_t;
+    switch_t.loadFromFile("C:/Users/user/OneDrive/Dokumenty/Key_Rush/switch.png");
     Switch switch_s(switch_t);
     switch_s.setPosition(25 + switch_s.getGlobalBounds().width, 575 - switch_s.getGlobalBounds().height);
 
     // Bricks
     sf::Texture brick_texture;
+    brick_texture.loadFromFile("C:/Users/user/OneDrive/Dokumenty/Key_Rush/brick.png");
     brick_texture.setRepeated(true);
     std::vector<sf::Sprite> bricks;
     sf::Sprite brick;
@@ -85,11 +89,13 @@ int main()
 
     // Monster
     sf::Texture monster_t;
+    monster_t.loadFromFile("C:/Users/user/OneDrive/Dokumenty/Key_Rush/monster.png");
     Monster monster(monster_t);
 
     // Coins
     srand(time(nullptr));
     sf::Texture coin_t;
+    coin_t.loadFromFile("C:/Users/user/OneDrive/Dokumenty/Key_Rush/coin.png");
     std::vector<Coin> coins;
     for(int i = 0; i < 20; i++)
     {
@@ -100,11 +106,13 @@ int main()
 
     // Hearts
     sf::Texture hearts_t;
+    hearts_t.loadFromFile("C:/Users/user/OneDrive/Dokumenty/Key_Rush/hearts.png");
     sf::Sprite hearts(hearts_t);
     hearts.setPosition(800 - hearts.getGlobalBounds().width,0);
 
     // Texts
     sf::Font font;
+    font.loadFromFile("C:/Users/user/OneDrive/Dokumenty/Key_Rush/arial.ttf");
     int score = 0;
     sf::Text score_text;
     score_text.setFont(font);
@@ -117,6 +125,12 @@ int main()
 
     // Gameover
     sf::Texture over_t;
+    sf::Text restart_game;
+    restart_game.setFont(font);
+    restart_game.setString("To restart the game press: R");
+    restart_game.setFillColor(sf::Color::White);
+    restart_game.setCharacterSize(30);
+    restart_game.setPosition(200, 400);
     over_t.loadFromFile("C:/Users/user/OneDrive/Dokumenty/Key_Rush/gameover.png");
     sf::Sprite gameover_s(over_t);
     gameover_s.setPosition(0, 0);
@@ -124,14 +138,15 @@ int main()
 
     // Gameover
     sf::Texture win_t;
+    win_t.loadFromFile("C:/Users/user/OneDrive/Dokumenty/Key_Rush/youwin.png");
     sf::Sprite win_s(win_t);
     win_s.setPosition(0, 0);
 
     sf::Clock clock;
-
+    bool restart=true;
     // run the program as long as the window is open
     while (window.isOpen())
-    {
+    { while (restart){
         // -----Delta Time----
         sf::Time elapsed = clock.restart();
 
@@ -185,7 +200,6 @@ int main()
             {
                 spik.animate(elapsed);
             }//spike.animate(elapsed);
-
             // Move monster
             monster.animate(elapsed);
             // Collision
@@ -213,14 +227,13 @@ int main()
                 door.open = true;
                 door.doorOpen();
             }
-
-            //Spike collision
+            // spikes collision
             for(int i = 0; i < (int)spiks.size(); i++)
-            {  if(spiks[i].getGlobalBounds().intersects(character.getGlobalBounds()))
-               { character.heart -= 1;
+            {
+            if(spiks[i].getGlobalBounds().intersects(character.getGlobalBounds())){
+                character.heart -= 1;
                 hearts.setTextureRect(sf::IntRect(0, 0, (192/3) * character.heart, 64));
-            }
-            }
+            }}
             // Coins Collision
             for(int i = 0; i < (int)coins.size(); i++)
             {
@@ -268,11 +281,33 @@ int main()
         window.draw(score_text);
         window.draw(hearts);
 
-        if(gameover == true && character.heart <= 0) window.draw(gameover_s);
+        if(gameover == true && character.heart <= 0) {
+            window.clear(sf::Color::Black);
+            window.draw(gameover_s);
+            window.draw(restart_game);
+            if(sf::Keyboard::isKeyPressed(sf::Keyboard::R)){
+                character.heart+=3;
+                window.clear(sf::Color::Black);
+                gameover = false;
+                character.setPosition(800 - character.getGlobalBounds().width, 575 - character.getGlobalBounds().height);
+                switch_s.on = false;
+                door.open=false;
+                switch_s.switch_on();
+                door.doorOpen();
+                score=0;
+                score_text.setString("Score: " + std::to_string(score));
+                coins.clear();
+                for(int i = 0; i < 20; i++)
+                {
+                    Coin coin(coin_t);
+                    coin.setPosition(rand()%(800-(int)coin.getGlobalBounds().width), rand()%(575-(int)coin.getGlobalBounds().height));
+                    coins.emplace_back(coin);
+                }
+            }
+        }
         else if(gameover == true && character.heart > 0) window.draw(win_s);
-
         window.display();
-    }
+        }}
 
     return 0;
 }
