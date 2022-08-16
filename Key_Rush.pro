@@ -9,6 +9,8 @@ SOURCES += \
         door.cpp \
         main.cpp \
         monster.cpp \
+        movingspike.cpp \
+        spike.cpp \
         switch.cpp
 
 
@@ -26,4 +28,6 @@ HEADERS += \
     coin.h \
     door.h \
     monster.h \
+    movingspike.h \
+    spike.h \
     switch.h
