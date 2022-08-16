@@ -185,6 +185,7 @@ int main()
             {
                 spik.animate(elapsed);
             }//spike.animate(elapsed);
+
             // Move monster
             monster.animate(elapsed);
             // Collision
@@ -213,6 +214,13 @@ int main()
                 door.doorOpen();
             }
 
+            //Spike collision
+            for(int i = 0; i < (int)spiks.size(); i++)
+            {  if(spiks[i].getGlobalBounds().intersects(character.getGlobalBounds()))
+               { character.heart -= 1;
+                hearts.setTextureRect(sf::IntRect(0, 0, (192/3) * character.heart, 64));
+            }
+            }
             // Coins Collision
             for(int i = 0; i < (int)coins.size(); i++)
             {
