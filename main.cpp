@@ -10,41 +10,14 @@
 #include <coin.h>
 #include <spike.h>
 #include <movingspike.h>
-int main()
-{
-    // create the window
-    sf::RenderWindow window(sf::VideoMode(800, 600), "My window");
-    window.setFramerateLimit(60);
-
-    // Background
-    sf::Texture background_texture;
-    background_texture.loadFromFile("background.png");
-    sf::Sprite background(background_texture);
-    background.setScale(2.0, 2.0);
-    background.setPosition(0, 0);
-
-    // Character
-    sf::Texture character_texture;
-    character_texture.loadFromFile("character.png");
-    Character character(character_texture);
-    character.setScale(0.6, 0.6);
-    character.setPosition(800 - character.getGlobalBounds().width, 575 - character.getGlobalBounds().height);
+void stage1(Switch* lever, sf::Sprite& brick,std::vector<sf::Sprite>& bricks,MovingSpike& spike,std::vector<MovingSpike>& spikes,
+            Door* door,Monster* monster){
 
     // Switch
-    sf::Texture switch_t;
-    switch_t.loadFromFile("switch.png");
-    Switch switch_s(switch_t);
-    switch_s.setPosition(25 + switch_s.getGlobalBounds().width, 575 - switch_s.getGlobalBounds().height);
+    lever->setPosition(25 + lever->getGlobalBounds().width, 575 - lever->getGlobalBounds().height);
 
     // Bricks
-    sf::Texture brick_texture;
-    brick_texture.loadFromFile("brick.png");
-    brick_texture.setRepeated(true);
-    std::vector<sf::Sprite> bricks;
-    sf::Sprite brick;
-    brick.setTexture(brick_texture);
-    brick.setScale(0.7, 0.7);
-
+    bricks.clear();
     brick.setPosition(450, 550 - 130);
     bricks.emplace_back(brick);
 
@@ -55,47 +28,140 @@ int main()
     bricks.emplace_back(brick);
 
     //spikes
-    sf::Texture spikes;
-    spikes.loadFromFile("spike.png");
-    MovingSpike spike(spikes);
+    ;
+
+
     spike.InitialPosition=sf::Vector2f(450,420);
     spike.setPosition(spike.InitialPosition);
     spike.setScale(0.05,0.05);
-    std::vector<MovingSpike> spiks;
-    spiks.emplace_back(spike);
+
+    spikes.emplace_back(spike);
     spike.InitialPosition=sf::Vector2f(575,420);
     spike.setPosition(spike.InitialPosition);
-    spiks.emplace_back(spike);
+    spikes.emplace_back(spike);
     spike.InitialPosition=sf::Vector2f(150,290);
     spike.setPosition(spike.InitialPosition);
-    spiks.emplace_back(spike);
+    spikes.emplace_back(spike);
     spike.InitialPosition=sf::Vector2f(275,290);
     spike.setPosition(spike.InitialPosition);
-    spiks.emplace_back(spike);
+    spikes.emplace_back(spike);
     spike.InitialPosition=sf::Vector2f(150,600);
     spike.setPosition(spike.InitialPosition);
-    spiks.emplace_back(spike);
+    spikes.emplace_back(spike);
     spike.InitialPosition=sf::Vector2f(135,600);
     spike.setPosition(spike.InitialPosition);
-    spiks.emplace_back(spike);
+    spikes.emplace_back(spike);
     spike.InitialPosition=sf::Vector2f(165,600);
     spike.setPosition(spike.InitialPosition);
+    spikes.emplace_back(spike);
+    // Doors
+
+    door->setPosition(350, 550 - 3*130 - door->getGlobalBounds().height);
+
+    // Monster
+}
+void stage2(Switch* lever, sf::Sprite& brick,std::vector<sf::Sprite>& bricks,MovingSpike& spike,std::vector<MovingSpike>& spikes,
+            Door* door,Monster* monster){
+
+    // Switch
+    lever->setPosition(25 + lever->getGlobalBounds().width, 575 - lever->getGlobalBounds().height);
+
+    // Bricks
+    bricks.emplace_back(brick);
+
+    brick.setPosition(150, 550 - 2*130);
+    bricks.emplace_back(brick);
+
+    brick.setPosition(350, 550 - 3*130);
+    //spikes
+    ;
+
+
+    spike.InitialPosition=sf::Vector2f(450,420);
+    spike.setPosition(spike.InitialPosition);
+    spikes.emplace_back(spike);
+    spike.InitialPosition=sf::Vector2f(575,420);
+    spike.setPosition(spike.InitialPosition);
+    spikes.emplace_back(spike);
+    spike.InitialPosition=sf::Vector2f(150,290);
+    spike.InitialPosition=sf::Vector2f(275,290);
+    spike.setPosition(spike.InitialPosition);
+    spikes.emplace_back(spike);
+    spike.InitialPosition=sf::Vector2f(150,600);
+    spike.setPosition(spike.InitialPosition);
+    spikes.emplace_back(spike);
+    spike.InitialPosition=sf::Vector2f(135,600);
+    spike.setPosition(spike.InitialPosition);
+    spikes.emplace_back(spike);
+    spike.InitialPosition=sf::Vector2f(165,600);
+    spike.setPosition(spike.InitialPosition);
+    spikes.emplace_back(spike);
+    // Doors
+
+    door->setPosition(350, 550 - 3*130 - door->getGlobalBounds().height);
+
+    // Monster
+int main()
+{
+    // create the window
+    sf::RenderWindow window(sf::VideoMode(800, 600), "My window");
+    window.setFramerateLimit(60);
+
+    // Background
+    sf::Texture background_texture;
+    background_texture.loadFromFile("C:/Users/user/OneDrive/Dokumenty/Key_Rush/background.png");
+    sf::Sprite background(background_texture);
+    background.setScale(2.0, 2.0);
+    background.setPosition(0, 0);
+
+    // Character
+    sf::Texture character_texture;
+    character_texture.loadFromFile("C:/Users/user/OneDrive/Dokumenty/Key_Rush/character.png");
+    Character character(character_texture);
+    character.setScale(0.6, 0.6);
+    character.setPosition(800 - character.getGlobalBounds().width, 575 - character.getGlobalBounds().height);
+
+    // Switch
+    sf::Texture switch_t;
+    switch_t.loadFromFile("C:/Users/user/OneDrive/Dokumenty/Key_Rush/switch.png");
+    Switch switch_s(switch_t);
+
+    // Bricks
+    sf::Texture brick_texture;
+    brick_texture.loadFromFile("C:/Users/user/OneDrive/Dokumenty/Key_Rush/brick.png");
+    brick_texture.setRepeated(true);
+    std::vector<sf::Sprite> bricks;
+    sf::Sprite brick;
+    brick.setTexture(brick_texture);
+    brick.setScale(0.7, 0.7);
+    bricks.emplace_back(brick);
+
+    //spikes
+    sf::Texture spikes;
+    spikes.loadFromFile("C:/Users/user/OneDrive/Dokumenty/Key_Rush/spike.png");
+    MovingSpike spike(spikes);
+    spike.InitialPosition=sf::Vector2f(450,420);
+    std::vector<MovingSpike> spiks;
+    spike.setPosition(spike.InitialPosition);
     spiks.emplace_back(spike);
+    spike.setPosition(spike.InitialPosition);
+    spiks.emplace_back(spike);
+
     // Doors
     sf::Texture doors_texture;
     doors_texture.loadFromFile("doors.png");
+    doors_texture.loadFromFile("C:/Users/user/OneDrive/Dokumenty/Key_Rush/doors.png");
     Door door(doors_texture);
-    door.setPosition(350, 550 - 3*130 - door.getGlobalBounds().height);
 
     // Monster
     sf::Texture monster_t;
-    monster_t.loadFromFile("monster.png");
+    monster_t.loadFromFile("C:/Users/user/OneDrive/Dokumenty/Key_Rush/monster.png");
     Monster monster(monster_t);
 
     // Coins
     srand(time(nullptr));
     sf::Texture coin_t;
-    coin_t.loadFromFile("coin.png");
+    coin_t.loadFromFile("C:/Users/user/OneDrive/Dokumenty/Key_Rush/coin.png");
     std::vector<Coin> coins;
     for(int i = 0; i < 20; i++)
     {
@@ -106,13 +172,13 @@ int main()
 
     // Hearts
     sf::Texture hearts_t;
-    hearts_t.loadFromFile("hearts.png");
+    hearts_t.loadFromFile("C:/Users/user/OneDrive/Dokumenty/Key_Rush/hearts.png");
     sf::Sprite hearts(hearts_t);
     hearts.setPosition(800 - hearts.getGlobalBounds().width,0);
 
     // Texts
     sf::Font font;
-    font.loadFromFile("arial.ttf");
+    font.loadFromFile("C:/Users/user/OneDrive/Dokumenty/Key_Rush/arial.ttf");
     int score = 0;
     sf::Text score_text;
     score_text.setFont(font);
@@ -131,17 +197,26 @@ int main()
     restart_game.setFillColor(sf::Color::White);
     restart_game.setCharacterSize(30);
     restart_game.setPosition(200, 400);
-    over_t.loadFromFile("gameover.png");
+    over_t.loadFromFile("C:/Users/user/OneDrive/Dokumenty/Key_Rush/gameover.png");
     sf::Sprite gameover_s(over_t);
     gameover_s.setPosition(0, 0);
     bool gameover = false;
 
     // Gameover
     sf::Texture win_t;
-    win_t.loadFromFile("youwin.png");
+    win_t.loadFromFile("C:/Users/user/OneDrive/Dokumenty/Key_Rush/youwin.png");
     sf::Sprite win_s(win_t);
     win_s.setPosition(0, 0);
+    sf::Text next_stage;
+       next_stage.setFont(font);
+       next_stage.setString("To start next stage press: Enter");
+       next_stage.setFillColor(sf::Color::White);
+       next_stage.setCharacterSize(30);
+       next_stage.setPosition(200, 400);
 
+       stage1(&switch_s,brick, bricks, spike, spiks,&door, &monster);
+
+    float time=0;
     sf::Clock clock;
     bool restart=true;
     // run the program as long as the window is open
@@ -150,6 +225,7 @@ int main()
         // -----Delta Time----
         sf::Time elapsed = clock.restart();
 
+         time+=elapsed.asSeconds();
         if(character.heart <= 0)
         {
             gameover = true;
@@ -204,12 +280,11 @@ int main()
             monster.animate(elapsed);
             // Collision
             if(monster.getGlobalBounds().intersects(character.getGlobalBounds()))
-            {
+            {if(time>0.3){
                 character.heart -= 1;
                 hearts.setTextureRect(sf::IntRect(0, 0, (192/3) * character.heart, 64));
-                monster.setPosition(0, 575 - monster.getGlobalBounds().height);
-            }
-
+                time=0;
+                }}
             // Door Collision
             if(door.getGlobalBounds().intersects(character.getGlobalBounds()) && door.open == true)
             {
@@ -231,8 +306,11 @@ int main()
             for(int i = 0; i < (int)spiks.size(); i++)
             {
             if(spiks[i].getGlobalBounds().intersects(character.getGlobalBounds())){
+                if(time>0.5){
                 character.heart -= 1;
                 hearts.setTextureRect(sf::IntRect(0, 0, (192/3) * character.heart, 64));
+                time=0;
+                }
             }}
             // Coins Collision
             for(int i = 0; i < (int)coins.size(); i++)
@@ -269,7 +347,7 @@ int main()
         for(auto &spik : spiks)
         {
             window.draw(spik);
-        }//window.draw(spike);
+        }
         for(auto &coin : coins)
         {
             window.draw(coin);
@@ -303,9 +381,15 @@ int main()
                     coin.setPosition(rand()%(800-(int)coin.getGlobalBounds().width), rand()%(575-(int)coin.getGlobalBounds().height));
                     coins.emplace_back(coin);
                 }
+                 monster.setPosition(0, 575 - monster.getGlobalBounds().height);
             }
         }
-        else if(gameover == true && character.heart > 0) window.draw(win_s);
+        else if(gameover == true && character.heart > 0){
+                window.clear(sf::Color::Black);
+                window.draw(win_s);
+                window.draw(next_stage);
+                stage2(&switch_s,brick, bricks, spike, spiks,&door, &monster);
+        }
         window.display();
         }}
 
