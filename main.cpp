@@ -67,23 +67,31 @@ void stage2(Switch* lever, sf::Sprite& brick,std::vector<sf::Sprite>& bricks,Mov
     lever->setPosition(25 + lever->getGlobalBounds().width, 575 - lever->getGlobalBounds().height);
 
     // Bricks
+    bricks.clear();
+    brick.setPosition(450, 550 - 130);
     bricks.emplace_back(brick);
 
     brick.setPosition(150, 550 - 2*130);
     bricks.emplace_back(brick);
 
     brick.setPosition(350, 550 - 3*130);
+    bricks.emplace_back(brick);
+
     //spikes
     ;
 
 
     spike.InitialPosition=sf::Vector2f(450,420);
     spike.setPosition(spike.InitialPosition);
+    spike.setScale(0.05,0.05);
+
     spikes.emplace_back(spike);
     spike.InitialPosition=sf::Vector2f(575,420);
     spike.setPosition(spike.InitialPosition);
     spikes.emplace_back(spike);
     spike.InitialPosition=sf::Vector2f(150,290);
+    spike.setPosition(spike.InitialPosition);
+    spikes.emplace_back(spike);
     spike.InitialPosition=sf::Vector2f(275,290);
     spike.setPosition(spike.InitialPosition);
     spikes.emplace_back(spike);
@@ -101,6 +109,7 @@ void stage2(Switch* lever, sf::Sprite& brick,std::vector<sf::Sprite>& bricks,Mov
     door->setPosition(350, 550 - 3*130 - door->getGlobalBounds().height);
 
     // Monster
+}
 int main()
 {
     // create the window
@@ -138,12 +147,10 @@ int main()
     sf::Texture spikes;
     spikes.loadFromFile("C:/Users/user/OneDrive/Dokumenty/Key_Rush/spike.png");
     MovingSpike spike(spikes);
-    spike.InitialPosition=sf::Vector2f(450,420);
     std::vector<MovingSpike> spiks;
 
     // Doors
     sf::Texture doors_texture;
-    doors_texture.loadFromFile("doors.png");
     doors_texture.loadFromFile("C:/Users/user/OneDrive/Dokumenty/Key_Rush/doors.png");
     Door door(doors_texture);
 
