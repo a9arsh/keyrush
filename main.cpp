@@ -134,18 +134,12 @@ int main()
     sf::Sprite brick;
     brick.setTexture(brick_texture);
     brick.setScale(0.7, 0.7);
-    bricks.emplace_back(brick);
-
     //spikes
     sf::Texture spikes;
     spikes.loadFromFile("C:/Users/user/OneDrive/Dokumenty/Key_Rush/spike.png");
     MovingSpike spike(spikes);
     spike.InitialPosition=sf::Vector2f(450,420);
     std::vector<MovingSpike> spiks;
-    spike.setPosition(spike.InitialPosition);
-    spiks.emplace_back(spike);
-    spike.setPosition(spike.InitialPosition);
-    spiks.emplace_back(spike);
 
     // Doors
     sf::Texture doors_texture;
@@ -275,7 +269,7 @@ int main()
             for(auto &spik : spiks)
             {
                 spik.animate(elapsed);
-            }//spike.animate(elapsed);
+            }
             // Move monster
             monster.animate(elapsed);
             // Collision
