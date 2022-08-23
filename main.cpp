@@ -10,7 +10,7 @@
 #include <coin.h>
 #include <spike.h>
 #include <movingspike.h>
-void stage1(Switch* lever, sf::Sprite& brick,std::vector<sf::Sprite>& bricks,MovingSpike& spike,std::vector<MovingSpike>& spikes,
+void stage2(Switch* lever, sf::Sprite& brick,std::vector<sf::Sprite>& bricks,MovingSpike& spike,std::vector<MovingSpike>& spikes,
             Door* door,Monster* monster){
 
     // Switch
@@ -18,20 +18,24 @@ void stage1(Switch* lever, sf::Sprite& brick,std::vector<sf::Sprite>& bricks,Mov
 
     // Bricks
     bricks.clear();
-    brick.setPosition(450, 550 - 130);
+    brick.setPosition(100, 550 - 130);
     bricks.emplace_back(brick);
 
     brick.setPosition(150, 550 - 2*130);
     bricks.emplace_back(brick);
 
-    brick.setPosition(350, 550 - 3*130);
+    brick.setPosition(300, 550 - 3*130);
+    bricks.emplace_back(brick);
+    brick.setPosition(600, 550 - 3*130);
+    bricks.emplace_back(brick);
+    brick.setPosition(100, 550 - 3*130);
     bricks.emplace_back(brick);
 
     //spikes
-    ;
 
 
-    spike.InitialPosition=sf::Vector2f(450,420);
+    spikes.clear();
+    spike.InitialPosition=sf::Vector2f(100,420);
     spike.setPosition(spike.InitialPosition);
     spike.setScale(0.05,0.05);
 
@@ -60,7 +64,7 @@ void stage1(Switch* lever, sf::Sprite& brick,std::vector<sf::Sprite>& bricks,Mov
 
     // Monster
 }
-void stage2(Switch* lever, sf::Sprite& brick,std::vector<sf::Sprite>& bricks,MovingSpike& spike,std::vector<MovingSpike>& spikes,
+void stage1(Switch* lever, sf::Sprite& brick,std::vector<sf::Sprite>& bricks,MovingSpike& spike,std::vector<MovingSpike>& spikes,
             Door* door,Monster* monster){
 
     // Switch
@@ -209,12 +213,18 @@ int main()
     sf::Sprite win_s(win_t);
     win_s.setPosition(0, 0);
     sf::Text next_stage;
-       next_stage.setFont(font);
-       next_stage.setString("To start next stage press: Enter");
-       next_stage.setFillColor(sf::Color::White);
-       next_stage.setCharacterSize(30);
-       next_stage.setPosition(200, 400);
-
+    next_stage.setFont(font);
+    next_stage.setString("To start next stage press: Enter");
+    next_stage.setFillColor(sf::Color::White);
+    next_stage.setCharacterSize(30);
+    next_stage.setPosition(200, 400);
+    sf::Text heal;
+    heal.setFont(font);
+    heal.setString("Before the stage begins,\n you can buy hearts \n u can have max: 3 \n to buy a hearth for 10 points press H");
+    heal.setFillColor(sf::Color::White);
+    heal.setCharacterSize(30);
+    heal.setPosition(200, 400);
+    bool h=false;
        stage1(&switch_s,brick, bricks, spike, spiks,&door, &monster);
 
     float time=0;
@@ -289,7 +299,7 @@ int main()
             // Door Collision
             if(door.getGlobalBounds().intersects(character.getGlobalBounds()) && door.open == true)
             {
-                if(sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+                if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
                 {
                     gameover = true;
                 }
@@ -332,7 +342,8 @@ int main()
         while (window.pollEvent(event))
         {
             // "close requested" event: we close the window
-            if (event.type == sf::Event::Closed) window.close();
+            if (event.type == sf::Event::Closed) {window.close();
+            restart=false;}
         }
 
         // clear the window with black color
@@ -364,6 +375,8 @@ int main()
             window.clear(sf::Color::Black);
             window.draw(gameover_s);
             window.draw(restart_game);
+            window.draw(score_text);
+            window.draw(hearts);
             if(sf::Keyboard::isKeyPressed(sf::Keyboard::R)){
                 character.heart+=3;
                 window.clear(sf::Color::Black);
@@ -386,10 +399,46 @@ int main()
             }
         }
         else if(gameover == true && character.heart > 0){
-                window.clear(sf::Color::Black);
-                window.draw(win_s);
-                window.draw(next_stage);
-                stage2(&switch_s,brick, bricks, spike, spiks,&door, &monster);
+                    if (h==false){
+                    window.clear(sf::Color::Black);
+                    window.draw(win_s);
+                    window.draw(next_stage);
+                    window.draw(score_text);
+                    window.draw(hearts);}
+                    if (h==true){
+                    window.clear(sf::Color::Black);
+                    window.draw(heal);
+                    window.draw(score_text);
+                    window.draw(hearts);
+                    if(sf::Keyboard::isKeyPressed(sf::Keyboard::H)&&score>=10){
+                        score-=10;
+                        character.heart++;
+                        std::cout<<character.heart;
+                    }}
+                    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)){
+                    h=true;
+                    stage2(&switch_s,brick, bricks, spike, spiks,&door, &monster);}
+                    if(sf::Keyboard::isKeyPressed(sf::Keyboard::N)){
+                        window.clear(sf::Color::Black);
+                        gameover = false;
+                        character.setPosition(800 - character.getGlobalBounds().width, 575 - character.getGlobalBounds().height);
+                        switch_s.on = false;
+                        door.open=false;
+                        switch_s.switch_on();
+                        door.doorOpen();
+                        score=0;
+                        score_text.setString("Score: " + std::to_string(score));
+                        coins.clear();
+                        for(int i = 0; i < 20; i++)
+                        {
+                            Coin coin(coin_t);
+                            coin.setPosition(rand()%(800-(int)coin.getGlobalBounds().width), rand()%(575-(int)coin.getGlobalBounds().height));
+                            coins.emplace_back(coin);
+                        }
+                         monster.setPosition(0, 575 - monster.getGlobalBounds().height);
+                    }
+
+
         }
         window.display();
         }}
