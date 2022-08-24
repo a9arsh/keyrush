@@ -1,20 +1,22 @@
 #include "monster.h"
 
-Monster::Monster(sf::Texture &texture)
+Monster::Monster(sf::Texture &texture, sf::FloatRect bounds_, int speed_, sf::Vector2f position)
 {
     this->setTexture(texture);
     this->setScale(0.5, 0.5);
-    this->setPosition(0, 575 - this->getGlobalBounds().height);
+    this->setPosition(position);
+    speed =speed_;
+    bounds=bounds_;
+    Initialposition=position;
 }
 
 void Monster::animate(sf::Time &elapsed)
-{
-    sf::FloatRect mbounds = this->getGlobalBounds();
-    if(mbounds.left <= 0.0)
+{   sf::FloatRect mbounds = this->getGlobalBounds();
+    if(mbounds.left <= bounds.left)
     {
         this->speed = std::abs(this->speed);
     }
-    else if(mbounds.left >= 800 - mbounds.width)
+    else if(mbounds.left+ mbounds.width >= bounds.left+bounds.width )
     {
         this->speed = -std::abs(this->speed);
     }
