@@ -14,7 +14,7 @@ void stage2(Switch* lever, sf::Sprite& brick,std::vector<sf::Sprite>& bricks,Mov
             Door* door,std::vector<Monster>& monsters, sf::Texture& txtmonst){
 
     // Switch
-    lever->setPosition(25 + lever->getGlobalBounds().width, 575 - lever->getGlobalBounds().height);
+    lever->setPosition(650, 100+lever->getGlobalBounds().height);
 
     // Bricks
     bricks.clear();
@@ -24,31 +24,21 @@ void stage2(Switch* lever, sf::Sprite& brick,std::vector<sf::Sprite>& bricks,Mov
     brick.setPosition(150, 550 - 2*130);
     bricks.emplace_back(brick);
 
-    brick.setPosition(300, 550 - 3*130);
+
+    brick.setPosition(600, 180);
     bricks.emplace_back(brick);
-    brick.setPosition(600, 550 - 3*130);
+    brick.setPosition(450, 180);
     bricks.emplace_back(brick);
-    brick.setPosition(100, 550 - 3*130);
+    brick.setPosition(300, 180);
+    bricks.emplace_back(brick);
+    brick.setPosition(150, 180);
     bricks.emplace_back(brick);
 
     //spikes
 
 
     spikes.clear();
-    spike.InitialPosition=sf::Vector2f(100,420);
-    spike.setPosition(spike.InitialPosition);
     spike.setScale(0.05,0.05);
-
-    spikes.emplace_back(spike);
-    spike.InitialPosition=sf::Vector2f(575,420);
-    spike.setPosition(spike.InitialPosition);
-    spikes.emplace_back(spike);
-    spike.InitialPosition=sf::Vector2f(150,290);
-    spike.setPosition(spike.InitialPosition);
-    spikes.emplace_back(spike);
-    spike.InitialPosition=sf::Vector2f(275,290);
-    spike.setPosition(spike.InitialPosition);
-    spikes.emplace_back(spike);
     spike.InitialPosition=sf::Vector2f(150,600);
     spike.setPosition(spike.InitialPosition);
     spikes.emplace_back(spike);
@@ -58,16 +48,17 @@ void stage2(Switch* lever, sf::Sprite& brick,std::vector<sf::Sprite>& bricks,Mov
     spike.InitialPosition=sf::Vector2f(165,600);
     spike.setPosition(spike.InitialPosition);
     spikes.emplace_back(spike);
+
     // Doors
 
-    door->setPosition(350, 550 - 3*130 - door->getGlobalBounds().height);
+    door->setPosition(700, 575 - door->getGlobalBounds().height);
 
     // Monster
     sf::Texture monster_t;
     monster_t.loadFromFile("C:/Users/user/OneDrive/Dokumenty/Key_Rush/monster.png");
-    Monster monster1(txtmonst,sf::FloatRect(0,0,800,600),200,sf::Vector2f(0, 525));
-     Monster monster2(txtmonst,sf::FloatRect(0,0,800,600),200,sf::Vector2f(300, 300));
-
+    Monster monster1(txtmonst,sf::FloatRect(0,180,800,420),50,150,sf::Vector2f(0, 525));
+     Monster monster2(txtmonst,sf::FloatRect(150,0,600,0),0,100,sf::Vector2f(300, 130));
+    monsters.clear();
     monsters.emplace_back(monster1);
         monsters.emplace_back(monster2);
 }
@@ -122,11 +113,10 @@ void stage1(Switch* lever, sf::Sprite& brick,std::vector<sf::Sprite>& bricks,Mov
     // Monster
     sf::Texture monster_t;
     monster_t.loadFromFile("C:/Users/user/OneDrive/Dokumenty/Key_Rush/monster.png");
-    Monster monster1(txtmonst,sf::FloatRect(0,0,800,600),200,sf::Vector2f(0, 525));
-     Monster monster2(txtmonst,sf::FloatRect(0,0,800,600),200,sf::Vector2f(300, 300));
-    std::vector<Monster> monstra;
+    Monster monster1(txtmonst,sf::FloatRect(0,0,800,600),0,200,sf::Vector2f(0, 525));
+
+    monsters.clear();
     monsters.emplace_back(monster1);
-        monsters.emplace_back(monster2);
 }
 int main()
 {
@@ -173,14 +163,9 @@ int main()
     Door door(doors_texture);
 
     // Monster
-   std::vector<Monster> monstra;
+    std::vector<Monster> monstra;
     sf::Texture monster_t;
     monster_t.loadFromFile("C:/Users/user/OneDrive/Dokumenty/Key_Rush/monster.png");
-    /*Monster monster1(monster_t,sf::FloatRect(0,0,800,600),200,sf::Vector2f(0, 525));
-     Monster monster2(monster_t,sf::FloatRect(0,0,800,600),200,sf::Vector2f(300, 300));
-
-    monstra.emplace_back(monster1);
-        monstra.emplace_back(monster2);*/
     // Coins
     srand(time(nullptr));
     sf::Texture coin_t;
@@ -243,7 +228,7 @@ int main()
     heal.setCharacterSize(30);
     heal.setPosition(200, 400);
     bool h=false;
-       stage1(&switch_s,brick, bricks, spike, spiks,&door,monstra,monster_t);
+       stage2(&switch_s,brick, bricks, spike, spiks,&door,monstra,monster_t);
 
     float time=0;
     sf::Clock clock;
@@ -255,6 +240,8 @@ int main()
         sf::Time elapsed = clock.restart();
 
          time+=elapsed.asSeconds();
+         score_text.setString("Score: " + std::to_string(score));
+         hearts.setTextureRect(sf::IntRect(0, 0, (192/3) * character.heart, 64));
         if(character.heart <= 0)
         {
             gameover = true;
@@ -267,22 +254,25 @@ int main()
             {
                 sf::FloatRect cbounds = character.getGlobalBounds();
                 sf::FloatRect bbounds = brick.getGlobalBounds();
-                if(cbounds.intersects(bbounds))
+                if(cbounds.intersects(bbounds) && !sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
                 {
                     // On brick
-                    if(cbounds.top < bbounds.top - cbounds.height + 10
-                            && cbounds.left > bbounds.left - cbounds.width
-                            && cbounds.left < bbounds.left + bbounds.width)
+                    if(cbounds.top > bbounds.top - cbounds.height
+                            &&cbounds.top < bbounds.top+ bbounds.height - cbounds.height
+                            && cbounds.left < bbounds.left + bbounds.width-10
+                            && cbounds.left +cbounds.width>bbounds.left+10)
                     {
-                        character.fall_velocity = 0;
-                        character.setPosition(character.getPosition().x, bbounds.top - cbounds.height);
+                        character.fall_velocity=0;
+                        character.onbrick = true;
+                        break;
+
                     }
                 }
                 else
-                {
-                    character.animate(elapsed);
-                }
+                {   character.onbrick=false;}}
 
+
+                    character.animate(elapsed);
                 // Move character
                 if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
                 {
@@ -300,7 +290,7 @@ int main()
                 {
                     character.moveInDirection(elapsed, sf::Keyboard::Right);
                 }
-            }
+
 
                 //Move spikes
                 for(auto &spik : spiks)
@@ -320,7 +310,6 @@ int main()
                 {
                         if(time>0.3){
                             character.heart -= 1;
-                            hearts.setTextureRect(sf::IntRect(0, 0, (192/3) * character.heart, 64));
                             time=0;
                 }}}
                 // Door Collision
@@ -331,7 +320,7 @@ int main()
                             gameover = true;
                 }}
 
-                // Switch Collision     //!!!!!!!!
+                // Switch Collision
                 if(switch_s.getGlobalBounds().intersects(character.getGlobalBounds()))
                 {
                     switch_s.on = true;
@@ -345,7 +334,6 @@ int main()
                     if(spiks[i].getGlobalBounds().intersects(character.getGlobalBounds())){
                         if(time>0.5){
                             character.heart -= 1;
-                            hearts.setTextureRect(sf::IntRect(0, 0, (192/3) * character.heart, 64));
                             time=0;
                 }}}
             // Coins Collision
@@ -355,7 +343,7 @@ int main()
                 {
                     score+=1;
                     coins.erase(coins.begin() + i);
-                    score_text.setString("Score: " + std::to_string(score));
+
                 }
             }
         }
@@ -427,17 +415,15 @@ int main()
                 for(auto &monstr : monstra)
                 {
                  monstr.setPosition(monstr.Initialposition);
-                }
-            }
-        }
-        else if(gameover == true && character.heart > 0){
-                    if (h==false){
+                }}}
+            else if(gameover == true && character.heart > 0){
+                if (h==false){
                     window.clear(sf::Color::Black);
                     window.draw(win_s);
                     window.draw(next_stage);
                     window.draw(score_text);
                     window.draw(hearts);}
-                    if (h==true){
+                if (h==true){
                     window.clear(sf::Color::Black);
                     window.draw(heal);
                     window.draw(score_text);
@@ -445,12 +431,14 @@ int main()
                     if(sf::Keyboard::isKeyPressed(sf::Keyboard::H)&&score>=10){
                         score-=10;
                         character.heart++;
+                        hearts.setTextureRect(sf::IntRect(0, 0, (192/3) * character.heart, 64));
                         std::cout<<character.heart;
                     }}
                     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)){
                     h=true;
-                    stage2(&switch_s,brick, bricks, spike, spiks,&door,monstra,monster_t);}
+                    }
                     if(sf::Keyboard::isKeyPressed(sf::Keyboard::N)){
+                        stage2(&switch_s,brick, bricks, spike, spiks,&door,monstra,monster_t);
                         window.clear(sf::Color::Black);
                         gameover = false;
                         character.setPosition(800 - character.getGlobalBounds().width, 575 - character.getGlobalBounds().height);
@@ -469,9 +457,8 @@ int main()
                         }
                         for(auto &monstr : monstra)
                         {
-                         monstr.setPosition(monstr.Initialposition);
-                        }
-                    }
+                            monstr.setPosition(monstr.Initialposition);
+                        }}
 
 
         }
