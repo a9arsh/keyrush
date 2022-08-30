@@ -3,6 +3,7 @@
 #include <vector>
 #include <iostream>
 
+#include<stages.cpp>
 #include <character.h>
 #include <switch.h>
 #include <door.h>
@@ -10,118 +11,12 @@
 #include <coin.h>
 #include <spike.h>
 #include <movingspike.h>
-void stage2(Switch* lever, sf::Sprite& brick,std::vector<sf::Sprite>& bricks,MovingSpike& spike,std::vector<MovingSpike>& spikes,
-            Door* door,std::vector<Monster>& monsters, sf::Texture& txtmonst){
-
-    // Switch
-    lever->setPosition(650, 100+lever->getGlobalBounds().height);
-
-    // Bricks
-    bricks.clear();
-    brick.setPosition(100, 550 - 130);
-    bricks.emplace_back(brick);
-
-    brick.setPosition(150, 550 - 2*130);
-    bricks.emplace_back(brick);
-
-
-    brick.setPosition(600, 180);
-    bricks.emplace_back(brick);
-    brick.setPosition(450, 180);
-    bricks.emplace_back(brick);
-    brick.setPosition(300, 180);
-    bricks.emplace_back(brick);
-    brick.setPosition(150, 180);
-    bricks.emplace_back(brick);
-
-    //spikes
-
-
-    spikes.clear();
-    spike.setScale(0.05,0.05);
-    spike.InitialPosition=sf::Vector2f(150,600);
-    spike.setPosition(spike.InitialPosition);
-    spikes.emplace_back(spike);
-    spike.InitialPosition=sf::Vector2f(135,600);
-    spike.setPosition(spike.InitialPosition);
-    spikes.emplace_back(spike);
-    spike.InitialPosition=sf::Vector2f(165,600);
-    spike.setPosition(spike.InitialPosition);
-    spikes.emplace_back(spike);
-
-    // Doors
-
-    door->setPosition(700, 575 - door->getGlobalBounds().height);
-
-    // Monster
-    sf::Texture monster_t;
-    monster_t.loadFromFile("C:/Users/user/OneDrive/Dokumenty/Key_Rush/monster.png");
-    Monster monster1(txtmonst,sf::FloatRect(0,180,800,420),50,150,sf::Vector2f(0, 525));
-     Monster monster2(txtmonst,sf::FloatRect(150,0,600,0),0,100,sf::Vector2f(300, 130));
-    monsters.clear();
-    monsters.emplace_back(monster1);
-        monsters.emplace_back(monster2);
-}
-void stage1(Switch* lever, sf::Sprite& brick,std::vector<sf::Sprite>& bricks,MovingSpike& spike,std::vector<MovingSpike>& spikes,
-            Door* door,std::vector<Monster>& monsters, sf::Texture& txtmonst){
-
-    // Switch
-    lever->setPosition(25 + lever->getGlobalBounds().width, 575 - lever->getGlobalBounds().height);
-
-    // Bricks
-    bricks.clear();
-    brick.setPosition(450, 550 - 130);
-    bricks.emplace_back(brick);
-
-    brick.setPosition(150, 550 - 2*130);
-    bricks.emplace_back(brick);
-
-    brick.setPosition(350, 550 - 3*130);
-    bricks.emplace_back(brick);
-
-    //spikes
-    ;
-
-    spikes.clear();
-    spike.InitialPosition=sf::Vector2f(450,420);
-    spike.setPosition(spike.InitialPosition);
-    spike.setScale(0.05,0.05);
-
-    spikes.emplace_back(spike);
-    spike.InitialPosition=sf::Vector2f(575,420);
-    spike.setPosition(spike.InitialPosition);
-    spikes.emplace_back(spike);
-    spike.InitialPosition=sf::Vector2f(150,290);
-    spike.setPosition(spike.InitialPosition);
-    spikes.emplace_back(spike);
-    spike.InitialPosition=sf::Vector2f(275,290);
-    spike.setPosition(spike.InitialPosition);
-    spikes.emplace_back(spike);
-    spike.InitialPosition=sf::Vector2f(150,600);
-    spike.setPosition(spike.InitialPosition);
-    spikes.emplace_back(spike);
-    spike.InitialPosition=sf::Vector2f(135,600);
-    spike.setPosition(spike.InitialPosition);
-    spikes.emplace_back(spike);
-    spike.InitialPosition=sf::Vector2f(165,600);
-    spike.setPosition(spike.InitialPosition);
-    spikes.emplace_back(spike);
-    // Doors
-
-    door->setPosition(350, 550 - 3*130 - door->getGlobalBounds().height);
-
-    // Monster
-    sf::Texture monster_t;
-    monster_t.loadFromFile("C:/Users/user/OneDrive/Dokumenty/Key_Rush/monster.png");
-    Monster monster1(txtmonst,sf::FloatRect(0,0,800,600),0,200,sf::Vector2f(0, 525));
-
-    monsters.clear();
-    monsters.emplace_back(monster1);
-}
+//void stage(int stage, int difficulty ,Switch* lever, sf::Sprite& brick,std::vector<sf::Sprite>& bricks,MovingSpike& spike,std::vector<MovingSpike>& spikes,
+//           Door* door,std::vector<Monster>& monsters, sf::Texture& txtmonst);
 int main()
 {
     // create the window
-    sf::RenderWindow window(sf::VideoMode(800, 600), "My window");
+    sf::RenderWindow window(sf::VideoMode(800, 600), "KeyRush");
     window.setFramerateLimit(60);
 
     // Background
@@ -215,6 +110,8 @@ int main()
     win_t.loadFromFile("C:/Users/user/OneDrive/Dokumenty/Key_Rush/youwin.png");
     sf::Sprite win_s(win_t);
     win_s.setPosition(0, 0);
+
+    //screen texts between stages
     sf::Text next_stage;
     next_stage.setFont(font);
     next_stage.setString("To start next stage press: Enter");
@@ -227,15 +124,46 @@ int main()
     heal.setFillColor(sf::Color::White);
     heal.setCharacterSize(30);
     heal.setPosition(200, 400);
+
+    //Game start
+    sf::Text welcome;
+    welcome.setFont(font);
+    welcome.setString("Choose a difficulty: \nHarder game modes have more enemies \nand are more challanging ");
+    welcome.setFillColor(sf::Color::White);
+    welcome.setCharacterSize(30);
+    welcome.setPosition(150, 100);
+    sf::Text diffEasy;
+    diffEasy.setFont(font);
+    diffEasy.setString("Easy");
+    diffEasy.setFillColor(sf::Color::White);
+    diffEasy.setCharacterSize(30);
+    diffEasy.setPosition(150, 400);
+    sf::Text diffMedium;
+    diffMedium.setFont(font);
+    diffMedium.setString("Medium");
+    diffMedium.setFillColor(sf::Color::White);
+    diffMedium.setCharacterSize(30);
+    diffMedium.setPosition(350, 400);
+    sf::Text diffHard;
+    diffHard.setFont(font);
+    diffHard.setString("Hard ");
+    diffHard.setFillColor(sf::Color::White);
+    diffHard.setCharacterSize(30);
+    diffHard.setPosition(550, 400);
+
+
+    bool game_on=false;
     bool h=false;
-       stage2(&switch_s,brick, bricks, spike, spiks,&door,monstra,monster_t);
+    int difficulty=0;
+    int lvl=1;
+
 
     float time=0;
     sf::Clock clock;
-    bool restart=true;
+    stage(lvl,difficulty,&switch_s,brick, bricks, spike, spiks,&door,monstra,monster_t);
     // run the program as long as the window is open
     while (window.isOpen())
-    { while (restart){
+    {
         // -----Delta Time----
         sf::Time elapsed = clock.restart();
 
@@ -247,7 +175,7 @@ int main()
             gameover = true;
         }
 
-        if(gameover == false)
+        if(gameover == false&& game_on==true)
         {
             // Collision & Animate character
             for(auto &brick : bricks)
@@ -356,11 +284,42 @@ int main()
         {
             // "close requested" event: we close the window
             if (event.type == sf::Event::Closed) {window.close();
-            restart=false;}
+            }
         }
 
         // clear the window with black color
-        window.clear(sf::Color::Black);
+            window.clear(sf::Color::Black);
+        if(!game_on){
+
+                window.draw(welcome);
+                window.draw(diffEasy);
+                window.draw(diffMedium);
+                window.draw(diffHard);
+                if(sf::Mouse::getPosition(window).y<450 && sf::Mouse::getPosition(window).y>350){
+                    if(sf::Mouse::getPosition(window).x>125 && sf::Mouse::getPosition(window).x<250){
+                        diffEasy.setFillColor(sf::Color::Green);
+                        if(sf::Mouse::isButtonPressed(sf::Mouse::Left))difficulty=1;
+                    }
+                    else if(sf::Mouse::getPosition(window).x>325&&sf::Mouse::getPosition(window).x<450){
+                        diffMedium.setFillColor(sf::Color::Yellow);
+                        if(sf::Mouse::isButtonPressed(sf::Mouse::Left))difficulty=2;
+                    }
+                    else if(sf::Mouse::getPosition(window).x>525&&sf::Mouse::getPosition(window).x<650){
+                        diffHard.setFillColor(sf::Color::Red);
+                        if(sf::Mouse::isButtonPressed(sf::Mouse::Left))difficulty=3;
+                    }
+                    else { if(difficulty!=1) diffEasy.setFillColor(sf::Color::White);
+                           if(difficulty!=3)diffHard.setFillColor(sf::Color::White);
+                           if(difficulty!=2)diffMedium.setFillColor(sf::Color::White);}
+                }else { if(difficulty!=1)diffEasy.setFillColor(sf::Color::White);
+                        if(difficulty!=3)diffHard.setFillColor(sf::Color::White);
+                        if(difficulty!=2)diffMedium.setFillColor(sf::Color::White);}}
+                if(difficulty){
+                    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)){
+                        window.clear(sf::Color::Black);
+                        game_on=true;
+                }}
+         if(game_on){
 
         // draw everything here...
         window.draw(background);
@@ -386,17 +345,19 @@ int main()
 
         window.draw(score_text);
         window.draw(hearts);
-
+                }
         if(gameover == true && character.heart <= 0) {
             window.clear(sf::Color::Black);
             window.draw(gameover_s);
             window.draw(restart_game);
             window.draw(score_text);
             window.draw(hearts);
+            lvl=1;
             if(sf::Keyboard::isKeyPressed(sf::Keyboard::R)){
+                game_on=false;
                 character.heart+=3;
                 window.clear(sf::Color::Black);
-                stage1(&switch_s,brick, bricks, spike, spiks,&door,monstra,monster_t);
+                stage(lvl,difficulty,&switch_s,brick, bricks, spike, spiks,&door,monstra,monster_t);
                 gameover = false;
                 character.setPosition(800 - character.getGlobalBounds().width, 575 - character.getGlobalBounds().height);
                 switch_s.on = false;
@@ -423,6 +384,7 @@ int main()
                     window.draw(next_stage);
                     window.draw(score_text);
                     window.draw(hearts);}
+
                 if (h==true){
                     window.clear(sf::Color::Black);
                     window.draw(heal);
@@ -438,7 +400,8 @@ int main()
                     h=true;
                     }
                     if(sf::Keyboard::isKeyPressed(sf::Keyboard::N)){
-                        stage2(&switch_s,brick, bricks, spike, spiks,&door,monstra,monster_t);
+                        lvl++;
+                        stage(lvl,difficulty,&switch_s,brick, bricks, spike, spiks,&door,monstra,monster_t);
                         window.clear(sf::Color::Black);
                         gameover = false;
                         character.setPosition(800 - character.getGlobalBounds().width, 575 - character.getGlobalBounds().height);
@@ -463,7 +426,7 @@ int main()
 
         }
         window.display();
-        }}
+        }
 
     return 0;
 }
