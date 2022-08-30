@@ -160,7 +160,7 @@ int main()
 
     float time=0;
     sf::Clock clock;
-    stage(lvl,difficulty,&switch_s,brick, bricks, spike, spiks,&door,monstra,monster_t);
+
     // run the program as long as the window is open
     while (window.isOpen())
     {
@@ -297,28 +297,29 @@ int main()
                 window.draw(diffHard);
                 if(sf::Mouse::getPosition(window).y<450 && sf::Mouse::getPosition(window).y>350){
                     if(sf::Mouse::getPosition(window).x>125 && sf::Mouse::getPosition(window).x<250){
-                        diffEasy.setFillColor(sf::Color::Green);
-                        if(sf::Mouse::isButtonPressed(sf::Mouse::Left))difficulty=1;
+                            diffEasy.setFillColor(sf::Color::Green);
+                            if(sf::Mouse::isButtonPressed(sf::Mouse::Left))difficulty=1;
                     }
                     else if(sf::Mouse::getPosition(window).x>325&&sf::Mouse::getPosition(window).x<450){
-                        diffMedium.setFillColor(sf::Color::Yellow);
-                        if(sf::Mouse::isButtonPressed(sf::Mouse::Left))difficulty=2;
+                            diffMedium.setFillColor(sf::Color::Yellow);
+                            if(sf::Mouse::isButtonPressed(sf::Mouse::Left))difficulty=2;
                     }
                     else if(sf::Mouse::getPosition(window).x>525&&sf::Mouse::getPosition(window).x<650){
-                        diffHard.setFillColor(sf::Color::Red);
-                        if(sf::Mouse::isButtonPressed(sf::Mouse::Left))difficulty=3;
+                            diffHard.setFillColor(sf::Color::Red);
+                            if(sf::Mouse::isButtonPressed(sf::Mouse::Left))difficulty=3;
                     }
                     else { if(difficulty!=1) diffEasy.setFillColor(sf::Color::White);
-                           if(difficulty!=3)diffHard.setFillColor(sf::Color::White);
-                           if(difficulty!=2)diffMedium.setFillColor(sf::Color::White);}
+                           if(difficulty!=2)diffMedium.setFillColor(sf::Color::White);
+                           if(difficulty!=3)diffHard.setFillColor(sf::Color::White);}
                 }else { if(difficulty!=1)diffEasy.setFillColor(sf::Color::White);
-                        if(difficulty!=3)diffHard.setFillColor(sf::Color::White);
-                        if(difficulty!=2)diffMedium.setFillColor(sf::Color::White);}}
+                        if(difficulty!=2)diffMedium.setFillColor(sf::Color::White);
+                        if(difficulty!=3)diffHard.setFillColor(sf::Color::White);}
                 if(difficulty){
                     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)){
                         window.clear(sf::Color::Black);
                         game_on=true;
-                }}
+                        stage(lvl,difficulty,&switch_s,brick, bricks, spike, spiks,&door,monstra,monster_t);
+                }}}
          if(game_on){
 
         // draw everything here...

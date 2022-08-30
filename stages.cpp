@@ -56,9 +56,19 @@ if (stage==2){
     monster_t.loadFromFile("C:/Users/user/OneDrive/Dokumenty/Key_Rush/monster.png");
     Monster monster1(txtmonst,sf::FloatRect(0,180,800,420),50,150,sf::Vector2f(0, 525));
      Monster monster2(txtmonst,sf::FloatRect(150,0,600,0),0,100,sf::Vector2f(300, 130));
+      Monster monster3(txtmonst,sf::FloatRect(150,0,600,0),0,-150,sf::Vector2f(700, 130));
+       Monster monster4(txtmonst,sf::FloatRect(150,0,600,0),100,100,sf::Vector2f(0, 525));
     monsters.clear();
     monsters.emplace_back(monster1);
     monsters.emplace_back(monster2);
+    if(difficulty>1){
+
+        monsters.emplace_back(monster3);
+        if(difficulty>2){
+            monsters[0].hspeed=200;
+         monsters.emplace_back(monster4);
+        }
+    }
 }
 if (stage==1){
     // Switch
@@ -79,20 +89,8 @@ if (stage==1){
     ;
 
     spikes.clear();
-    spike.InitialPosition=sf::Vector2f(450,420);
-    spike.setPosition(spike.InitialPosition);
     spike.setScale(0.05,0.05);
 
-    spikes.emplace_back(spike);
-    spike.InitialPosition=sf::Vector2f(575,420);
-    spike.setPosition(spike.InitialPosition);
-    spikes.emplace_back(spike);
-    spike.InitialPosition=sf::Vector2f(150,290);
-    spike.setPosition(spike.InitialPosition);
-    spikes.emplace_back(spike);
-    spike.InitialPosition=sf::Vector2f(275,290);
-    spike.setPosition(spike.InitialPosition);
-    spikes.emplace_back(spike);
     spike.InitialPosition=sf::Vector2f(150,600);
     spike.setPosition(spike.InitialPosition);
     spikes.emplace_back(spike);
@@ -102,17 +100,39 @@ if (stage==1){
     spike.InitialPosition=sf::Vector2f(165,600);
     spike.setPosition(spike.InitialPosition);
     spikes.emplace_back(spike);
-    // Doors
 
+
+    // Door
     door->setPosition(350, 550 - 3*130 - door->getGlobalBounds().height);
 
     // Monster
     sf::Texture monster_t;
     monster_t.loadFromFile("C:/Users/user/OneDrive/Dokumenty/Key_Rush/monster.png");
     Monster monster1(txtmonst,sf::FloatRect(0,0,800,600),0,200,sf::Vector2f(0, 525));
-
+    Monster monster2(txtmonst,sf::FloatRect(0,0,800,600),50,50,sf::Vector2f(0, 525));
+    Monster monster3(txtmonst,sf::FloatRect(0,0,800,600),100,0,sf::Vector2f(400, 525));
     monsters.clear();
     monsters.emplace_back(monster1);
+    if(difficulty>1){
+        spike.InitialPosition=sf::Vector2f(450,420);
+        spike.setPosition(spike.InitialPosition);
+        spikes.emplace_back(spike);
+        spike.InitialPosition=sf::Vector2f(575,420);
+        spike.setPosition(spike.InitialPosition);
+        spikes.emplace_back(spike);
+        spike.InitialPosition=sf::Vector2f(150,290);
+        spike.setPosition(spike.InitialPosition);
+        spikes.emplace_back(spike);
+        spike.InitialPosition=sf::Vector2f(275,290);
+        spike.setPosition(spike.InitialPosition);
+        spikes.emplace_back(spike);
+
+        monsters.emplace_back(monster2);
+        if(difficulty>2){
+            monsters[0].hspeed=400;
+         monsters.emplace_back(monster3);
+        }
+    }
 }
 if(stage==3){//to be changed
     // Switch
