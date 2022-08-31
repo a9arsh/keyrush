@@ -6,7 +6,8 @@ class Switch : public sf::Sprite
 {
 public:
     bool on = false;
-
+    int x_;
+    int y_;
 public:
     Switch(sf::Texture &texture);
 

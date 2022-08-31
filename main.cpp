@@ -28,10 +28,9 @@ int main()
 
     // Character
     sf::Texture character_texture;
-    character_texture.loadFromFile("C:/Users/user/OneDrive/Dokumenty/Key_Rush/character.png");
+    character_texture.loadFromFile("C:/Users/user/OneDrive/Dokumenty/Key_Rush/character1.png");
     Character character(character_texture);
-    character.setScale(0.6, 0.6);
-    character.setPosition(800 - character.getGlobalBounds().width, 575 - character.getGlobalBounds().height);
+
 
     // Switch
     sf::Texture switch_t;
@@ -276,14 +275,31 @@ int main()
             }
         }
 
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) return 0;
-
         // check all the window's events that were triggered since the last iteration of the loop
         sf::Event event;
         while (window.pollEvent(event))
         {
             // "close requested" event: we close the window
             if (event.type == sf::Event::Closed) {window.close();
+            }
+            if(event.type==sf::Event::KeyReleased){
+                if(event.key.code==sf::Keyboard::LControl ||event.key.code==sf::Keyboard::RControl){
+                    character.runOrWalk();//changes walking to running and otherway
+
+                }
+            }
+            if(event.type==sf::Event::KeyReleased){
+                if(event.key.code==sf::Keyboard::Left ||event.key.code==sf::Keyboard::Right){
+                    character.standStill();
+
+                }
+            }
+            if(event.type==sf::Event::KeyReleased){
+                if(event.key.code==sf::Keyboard::Up){
+                    character.jump=false;
+                    character.standStill();
+
+                }
             }
         }
 
