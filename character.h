@@ -12,18 +12,17 @@ public:
     float t = 0;
     float t1=0;
     int floor = 0;
-    bool faceleft=false;
     int s_=false;
     int txtwidth;
     int txtheight;
     int txtcolumn;
     int txtrow;
-    bool walk=false;
-    bool jump=false;
     int i=1;
     int heart = 3;
     bool onbrick=false;
-
+    bool walk=false;
+    bool jump=false;
+    bool faceleft=false;
 public:
 
     Character(sf::Texture &texture);

@@ -8,8 +8,8 @@
 #include <spike.h>
 #include <movingspike.h>
 
-void stage(int stage, int difficulty ,Switch* lever, sf::Sprite& brick,std::vector<sf::Sprite>& bricks,MovingSpike& spike,std::vector<MovingSpike>& spikes,
-            Door* door,std::vector<Monster>& monsters, sf::Texture& txtmonst){
+void stage(int& stage, int& difficulty ,Switch* lever, sf::Sprite& brick,std::vector<sf::Sprite>& bricks,MovingSpike& spike,std::vector<MovingSpike>& spikes,
+            Door* door,std::vector<Monster>& monsters, sf::Texture& txtmonst,Spike& localspike,std::vector<Spike>& localspikes ){
 if (stage==2){
     // Switch
     lever->setPosition(650, 100+lever->getGlobalBounds().height);
@@ -32,20 +32,56 @@ if (stage==2){
     brick.setPosition(150, 180);
     bricks.emplace_back(brick);
 
-    //spikes
+    //standing spikes
+    localspike.changePosition(sf::Vector2f(0,0));
+    localspike.setScale(-0.05,0.05);
+    localspikes.emplace_back(localspike);
+
+
+    //moving spikes
 
 
     spikes.clear();
     spike.setScale(0.05,0.05);
-    spike.InitialPosition=sf::Vector2f(150,600);
-    spike.setPosition(spike.InitialPosition);
+    spike.changePosition(sf::Vector2f(200,600));
     spikes.emplace_back(spike);
-    spike.InitialPosition=sf::Vector2f(135,600);
-    spike.setPosition(spike.InitialPosition);
+    spike.changePosition(sf::Vector2f(225,600));
     spikes.emplace_back(spike);
-    spike.InitialPosition=sf::Vector2f(165,600);
-    spike.setPosition(spike.InitialPosition);
+    spike.changePosition(sf::Vector2f(250,600));
     spikes.emplace_back(spike);
+    if(difficulty>2){
+    spike.changePosition(sf::Vector2f(400,600));
+    spikes.emplace_back(spike);
+    spike.changePosition(sf::Vector2f(425,600));
+    spikes.emplace_back(spike);
+    spike.changePosition(sf::Vector2f(450,600));
+    spikes.emplace_back(spike);
+
+    spike.changePosition(sf::Vector2f(600,600));
+    spikes.emplace_back(spike);
+    spike.changePosition(sf::Vector2f(625,600));
+    spikes.emplace_back(spike);
+    spike.changePosition(sf::Vector2f(650,600));
+    spikes.emplace_back(spike);
+
+    spike.setScale(0.05,-0.05);
+    spike.changePosition(sf::Vector2f(300,450));
+    spikes.emplace_back(spike);
+    spike.changePosition(sf::Vector2f(325,450));
+    spikes.emplace_back(spike);
+    spike.changePosition(sf::Vector2f(350,450));
+    spikes.emplace_back(spike);
+
+
+    spike.changePosition(sf::Vector2f(500,450));
+    spikes.emplace_back(spike);
+    spike.changePosition(sf::Vector2f(525,450));
+    spikes.emplace_back(spike);
+    spike.changePosition(sf::Vector2f(550,450));
+    spikes.emplace_back(spike);
+    }
+
+
 
     // Doors
 
@@ -85,20 +121,21 @@ if (stage==1){
     brick.setPosition(350, 550 - 3*130);
     bricks.emplace_back(brick);
 
-    //spikes
+    //standing spikes
+    localspike.changePosition(sf::Vector2f(25,25));
+    localspike.setScale(0.05,-0.05);
+    localspikes.emplace_back(localspike);
+    //movingspikes
     ;
 
     spikes.clear();
     spike.setScale(0.05,0.05);
+    spike.changePosition(sf::Vector2f(150,600));
+    spikes.emplace_back(spike);
+    spike.changePosition(sf::Vector2f(135,600));
 
-    spike.InitialPosition=sf::Vector2f(150,600);
-    spike.setPosition(spike.InitialPosition);
     spikes.emplace_back(spike);
-    spike.InitialPosition=sf::Vector2f(135,600);
-    spike.setPosition(spike.InitialPosition);
-    spikes.emplace_back(spike);
-    spike.InitialPosition=sf::Vector2f(165,600);
-    spike.setPosition(spike.InitialPosition);
+    spike.changePosition(sf::Vector2f(165,600));
     spikes.emplace_back(spike);
 
 
@@ -113,18 +150,18 @@ if (stage==1){
     Monster monster3(txtmonst,sf::FloatRect(0,0,800,600),100,0,sf::Vector2f(400, 525));
     monsters.clear();
     monsters.emplace_back(monster1);
+
+
     if(difficulty>1){
-        spike.InitialPosition=sf::Vector2f(450,420);
-        spike.setPosition(spike.InitialPosition);
+        spike.changePosition(sf::Vector2f(450,420));
         spikes.emplace_back(spike);
         spike.InitialPosition=sf::Vector2f(575,420);
-        spike.setPosition(spike.InitialPosition);
         spikes.emplace_back(spike);
-        spike.InitialPosition=sf::Vector2f(150,290);
-        spike.setPosition(spike.InitialPosition);
+        spike.changePosition(sf::Vector2f(150,290));
+
         spikes.emplace_back(spike);
-        spike.InitialPosition=sf::Vector2f(275,290);
-        spike.setPosition(spike.InitialPosition);
+        spike.changePosition(sf::Vector2f(275,290));
+
         spikes.emplace_back(spike);
 
         monsters.emplace_back(monster2);
@@ -152,33 +189,10 @@ if(stage==3){//to be changed
     brick.setPosition(350, 550 - 3*130);
     bricks.emplace_back(brick);
 
-    //spikes
-    ;
+    // moving spikes
 
     spikes.clear();
-    spike.InitialPosition=sf::Vector2f(450,420);
-    spike.setPosition(spike.InitialPosition);
-    spike.setScale(0.05,0.05);
 
-    spikes.emplace_back(spike);
-    spike.InitialPosition=sf::Vector2f(575,420);
-    spike.setPosition(spike.InitialPosition);
-    spikes.emplace_back(spike);
-    spike.InitialPosition=sf::Vector2f(150,290);
-    spike.setPosition(spike.InitialPosition);
-    spikes.emplace_back(spike);
-    spike.InitialPosition=sf::Vector2f(275,290);
-    spike.setPosition(spike.InitialPosition);
-    spikes.emplace_back(spike);
-    spike.InitialPosition=sf::Vector2f(150,600);
-    spike.setPosition(spike.InitialPosition);
-    spikes.emplace_back(spike);
-    spike.InitialPosition=sf::Vector2f(135,600);
-    spike.setPosition(spike.InitialPosition);
-    spikes.emplace_back(spike);
-    spike.InitialPosition=sf::Vector2f(165,600);
-    spike.setPosition(spike.InitialPosition);
-    spikes.emplace_back(spike);
     // Doors
 
     door->setPosition(350, 550 - 3*130 - door->getGlobalBounds().height);

@@ -45,11 +45,17 @@ int main()
     sf::Sprite brick;
     brick.setTexture(brick_texture);
     brick.setScale(0.7, 0.7);
+
     //spikes
     sf::Texture spikes;
     spikes.loadFromFile("C:/Users/user/OneDrive/Dokumenty/Key_Rush/spike.png");
-    MovingSpike spike(spikes);
-    std::vector<MovingSpike> spiks;
+    MovingSpike mspike(spikes);
+    Spike spike(spikes);
+
+    std::vector<MovingSpike> mspiks;
+    std::vector<Spike> spiks;
+
+
 
     // Doors
     sf::Texture doors_texture;
@@ -220,7 +226,7 @@ int main()
 
 
                 //Move spikes
-                for(auto &spik : spiks)
+                for(auto &spik : mspiks)
                 {
                     spik.animate(elapsed);
                 }
@@ -334,7 +340,7 @@ int main()
                     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)){
                         window.clear(sf::Color::Black);
                         game_on=true;
-                        stage(lvl,difficulty,&switch_s,brick, bricks, spike, spiks,&door,monstra,monster_t);
+                        stage(lvl,difficulty,&switch_s,brick, bricks, mspike, mspiks,&door,monstra,monster_t,spike,spiks);
                 }}}
          if(game_on){
 
@@ -346,6 +352,10 @@ int main()
             window.draw(brick);
         }
         for(auto &spik : spiks)
+        {
+            window.draw(spik);
+        }
+        for(auto &spik : mspiks)
         {
             window.draw(spik);
         }
@@ -374,7 +384,7 @@ int main()
                 game_on=false;
                 character.heart+=3;
                 window.clear(sf::Color::Black);
-                stage(lvl,difficulty,&switch_s,brick, bricks, spike, spiks,&door,monstra,monster_t);
+                stage(lvl,difficulty,&switch_s,brick, bricks, mspike, mspiks,&door,monstra,monster_t,spike,spiks);
                 gameover = false;
                 character.setPosition(800 - character.getGlobalBounds().width, 575 - character.getGlobalBounds().height);
                 switch_s.on = false;
@@ -418,7 +428,7 @@ int main()
                     }
                     if(sf::Keyboard::isKeyPressed(sf::Keyboard::N)){
                         lvl++;
-                        stage(lvl,difficulty,&switch_s,brick, bricks, spike, spiks,&door,monstra,monster_t);
+                        stage(lvl,difficulty,&switch_s,brick, bricks, mspike, mspiks,&door,monstra,monster_t,spike,spiks);
                         window.clear(sf::Color::Black);
                         gameover = false;
                         character.setPosition(800 - character.getGlobalBounds().width, 575 - character.getGlobalBounds().height);

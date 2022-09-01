@@ -7,8 +7,9 @@ class MovingSpike : public Spike
 public:
     MovingSpike(sf::Texture &texture);
 public:
-   int Speed_=20;
+   int Speed_=-20;
    int Range_=50;
-   sf::Vector2f InitialPosition;
+
 void animate(sf::Time &elapsed);
+
 };
