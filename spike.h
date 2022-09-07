@@ -2,9 +2,10 @@
 #include <SFML/Graphics.hpp>
 
 class Spike: public sf::Sprite
-{
+{protected:
+   sf::Vector2f InitialPosition;
 public:
     Spike(sf::Texture &texture);
-    sf::Vector2f InitialPosition;
-    void changePosition(sf::Vector2f pos);
+
+    void changePosition(const sf::Vector2f &pos);
 };

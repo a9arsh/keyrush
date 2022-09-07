@@ -11,8 +11,9 @@
 #include <coin.h>
 #include <spike.h>
 #include <movingspike.h>
-//void stage(int stage, int difficulty ,Switch* lever, sf::Sprite& brick,std::vector<sf::Sprite>& bricks,MovingSpike& spike,std::vector<MovingSpike>& spikes,
-//           Door* door,std::vector<Monster>& monsters, sf::Texture& txtmonst);
+#include <bullet.h>
+#include <cmath>
+
 int main()
 {
     // create the window
@@ -77,7 +78,10 @@ int main()
         coin.setPosition(rand()%(800-(int)coin.getGlobalBounds().width), rand()%(575-(int)coin.getGlobalBounds().height));
         coins.emplace_back(coin);
     }
-
+    //Bullets
+    std::vector<bullet>missiles;
+    sf::Texture bulletTexture;
+    bulletTexture.loadFromFile("C:/Users/user/OneDrive/Dokumenty/Key_Rush/yellowball.jpg");
     // Hearts
     sf::Texture hearts_t;
     hearts_t.loadFromFile("C:/Users/user/OneDrive/Dokumenty/Key_Rush/hearts.png");
@@ -161,6 +165,7 @@ int main()
     bool h=false;
     int difficulty=0;
     int lvl=1;
+    int itmis=0; //iterator for the missiles collision
 
 
     float time=0;
@@ -231,10 +236,28 @@ int main()
                     spik.animate(elapsed);
                 }
 
-                // Move monster
+                // Move monster and monster attack
                 for(auto &monstr : monstra)
                  {
                     monstr.animate(elapsed);
+                 }
+              for(auto &monstr : monstra)
+                 {
+                   if( monstr.attack(elapsed)){
+
+                       double ydistance=character.getPosition().y-monstr.getPosition().y;
+                       double xdistance=character.getPosition().x-monstr.getPosition().x;
+                       double c=sqrt(pow(xdistance,2)+pow(ydistance,2));
+                       ydistance/=c;
+                       xdistance/=c;
+                       bullet bullet(bulletTexture,ydistance*100,xdistance*100,monstr.getPosition());
+                       missiles.emplace_back(bullet);
+                   }
+                 }
+                //Move bullets
+                 for(auto &missile : missiles)
+                 {
+                    missile.moveBullet(elapsed);
                  }
                 // Collision
                 for(auto &monstr : monstra)
@@ -261,7 +284,31 @@ int main()
                     door.open = true;
                     door.doorOpen();
                 }
+                //bulletcollision
+                 for(auto &missile :missiles )
+                 {  itmis++;
+                    sf::FloatRect mbounds = missile.getGlobalBounds();;
+                    sf::FloatRect cbounds = character.getGlobalBounds();
+                    for(auto &brick : bricks){
+                        sf::FloatRect bbounds = brick.getGlobalBounds();
+                        if (mbounds.intersects(bbounds)){
+                             missiles.erase(missiles.begin()+itmis-1);
+                        }
+                    }
+                    if (mbounds.intersects(cbounds)){
+                        missiles.erase(missiles.begin()+itmis-1);
+                        if(rand()%100>33)character.heart-=1;
+                    }
+
+                 }
                 // spikes collision
+                for(int i = 0; i < (int)mspiks.size(); i++)
+                {
+                    if(mspiks[i].getGlobalBounds().intersects(character.getGlobalBounds())){
+                        if(time>0.5){
+                            character.heart -= 1;
+                            time=0;
+                }}}
                 for(int i = 0; i < (int)spiks.size(); i++)
                 {
                     if(spiks[i].getGlobalBounds().intersects(character.getGlobalBounds())){
@@ -355,6 +402,10 @@ int main()
         {
             window.draw(spik);
         }
+        for(auto &missile : missiles)
+        {
+            window.draw(missile);
+        }
         for(auto &spik : mspiks)
         {
             window.draw(spik);
@@ -400,10 +451,7 @@ int main()
                     coin.setPosition(rand()%(800-(int)coin.getGlobalBounds().width), rand()%(575-(int)coin.getGlobalBounds().height));
                     coins.emplace_back(coin);
                 }
-                for(auto &monstr : monstra)
-                {
-                 monstr.setPosition(monstr.Initialposition);
-                }}}
+               }}
             else if(gameover == true && character.heart > 0){
                 if (h==false){
                     window.clear(sf::Color::Black);
@@ -445,10 +493,7 @@ int main()
                             coin.setPosition(rand()%(800-(int)coin.getGlobalBounds().width), rand()%(575-(int)coin.getGlobalBounds().height));
                             coins.emplace_back(coin);
                         }
-                        for(auto &monstr : monstra)
-                        {
-                            monstr.setPosition(monstr.Initialposition);
-                        }}
+                        }
 
 
         }

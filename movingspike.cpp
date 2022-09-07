@@ -16,3 +16,9 @@ void MovingSpike::animate(sf::Time &elapsed)
     }
     this->move(0,Speed_ * elapsed.asSeconds());
 }
+void::MovingSpike::setSpeed(int &speed){
+  Speed_=speed;
+}
+void::MovingSpike::setRange(int &range){
+    Range_=range;
+}

@@ -8,7 +8,6 @@ Monster::Monster(sf::Texture &texture, sf::FloatRect bounds_, int verticalspeed_
     vspeed =verticalspeed_;
     hspeed=horizontalspeed_;
     bounds=bounds_;
-    Initialposition=position;
 }
 
 void Monster::animate(sf::Time &elapsed)
@@ -32,4 +31,19 @@ void Monster::animate(sf::Time &elapsed)
 
 
     this->move(hspeed * elapsed.asSeconds(),vspeed * elapsed.asSeconds());
+}
+
+bool::Monster::attack(sf::Time &elapsed){
+    if(atk){
+        atktime+=elapsed.asSeconds();
+        if(atktime>2){
+            atktime=0;
+            return true;
+        }else return false;
+
+
+    }else return false;
+}
+void::Monster::enableAttack(){
+    atk=true;
 }

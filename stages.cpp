@@ -101,7 +101,7 @@ if (stage==2){
 
         monsters.emplace_back(monster3);
         if(difficulty>2){
-            monsters[0].hspeed=200;
+            //monsters[0].hspeed=200;
          monsters.emplace_back(monster4);
         }
     }
@@ -155,7 +155,7 @@ if (stage==1){
     if(difficulty>1){
         spike.changePosition(sf::Vector2f(450,420));
         spikes.emplace_back(spike);
-        spike.InitialPosition=sf::Vector2f(575,420);
+        spike.changePosition(sf::Vector2f(575,420));
         spikes.emplace_back(spike);
         spike.changePosition(sf::Vector2f(150,290));
 
@@ -163,11 +163,12 @@ if (stage==1){
         spike.changePosition(sf::Vector2f(275,290));
 
         spikes.emplace_back(spike);
+        monsters[0].enableAttack();
 
-        monsters.emplace_back(monster2);
         if(difficulty>2){
-            monsters[0].hspeed=400;
+           // monsters[0].hspeed=400;
          monsters.emplace_back(monster3);
+         monsters.emplace_back(monster2);
         }
     }
 }
