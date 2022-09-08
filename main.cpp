@@ -80,8 +80,10 @@ int main()
     }
     //Bullets
     std::vector<bullet>missiles;
+    std::vector<bullet>chmissiles;
     sf::Texture bulletTexture;
     bulletTexture.loadFromFile("C:/Users/user/OneDrive/Dokumenty/Key_Rush/yellowball.jpg");
+
     // Hearts
     sf::Texture hearts_t;
     hearts_t.loadFromFile("C:/Users/user/OneDrive/Dokumenty/Key_Rush/hearts.png");
@@ -129,11 +131,42 @@ int main()
     next_stage.setPosition(200, 400);
     sf::Text heal;
     heal.setFont(font);
-    heal.setString("Before the stage begins,\n you can buy hearts \n u can have max: 3 \n to buy a hearth for 10 points press H");
+    heal.setString("Before the next stage begins,\n you can buy hearts for collected points \n u can have max. 3 of them \n to buy a hearth for 10 points press H");
     heal.setFillColor(sf::Color::White);
     heal.setCharacterSize(30);
     heal.setPosition(200, 400);
-
+    //Program start
+    sf::Text start;
+    start.setFont(font);
+    start.setString("Start");
+    start.setFillColor(sf::Color::White);
+    start.setCharacterSize(30);
+    start.setPosition(375, 400);
+    sf::Text title;
+    title.setFont(font);
+    title.setStyle(sf::Text::Bold|sf::Text::Italic);
+    title.setString("KEY RUSH");
+    title.setFillColor(sf::Color::Yellow);
+    title.setCharacterSize(100);
+    title.setPosition(150,100);
+    //Instructions for the player
+    sf::Text instruction;
+    instruction.setFont(font);
+    instruction.setString("Welcome to KeyRush!! \nIn our game your goal is to go through 3 levels without losing 3 hearts.\n"
+                          "In order to finish a level you have to go through a door.\n"
+                          "To do so press SPACE while standing before an open door"
+                          "\nFirst tho you have to open them with a lever by stepping on it.\n"
+                          "Use ARROWS to move the character.\nYou can also switch between running and walking with CTRL.\n"
+                          "Avoid touching the monsters and obstacles.\n"
+                          "On each lvl you can collect coins.\nCoins can be used to restore your hearts between the stages. \n"
+                          "On higher difficulties some monsters will also shoot missiles at you.\n"
+                          "These missiles have 50% chance to hurt you,\n"
+                          "but its better for you not to test your luck on them :D\n"
+                          "Good Luck and Have Fun!!!!!");
+    instruction.setFillColor(sf::Color::Yellow);
+    instruction.setCharacterSize(20);
+    instruction.setPosition(50, 50);
+    instruction.setLineSpacing(1.5);
     //Game start
     sf::Text welcome;
     welcome.setFont(font);
@@ -160,9 +193,9 @@ int main()
     diffHard.setCharacterSize(30);
     diffHard.setPosition(550, 400);
 
-
+    bool start_of_the_game=true;
+    bool instructions=false;
     bool game_on=false;
-    bool h=false;
     int difficulty=0;
     int lvl=1;
     int itmis=0; //iterator for the missiles collision
@@ -211,6 +244,7 @@ int main()
 
 
                     character.animate(elapsed);
+                    character.attack(elapsed);
                 // Move character
                 if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
                 {
@@ -227,6 +261,19 @@ int main()
                 if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
                 {
                     character.moveInDirection(elapsed, sf::Keyboard::Right);
+                }
+                if(sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
+                {
+                   if ( character.attack(elapsed)){
+                       double ydistance=sf::Mouse::getPosition(window).y-character.getPosition().y;
+                       double xdistance=sf::Mouse::getPosition(window).x-character.getPosition().x;
+                       double c=sqrt(pow(xdistance,2)+pow(ydistance,2));
+                       ydistance/=c;
+                       xdistance/=c;
+                       bullet bullet(bulletTexture,ydistance*200,xdistance*200,sf::Vector2f(sf::Mouse::getPosition(window)));
+                       chmissiles.emplace_back(bullet);
+                       std::cout<<"pow"<<std::endl;
+                   }
                 }
 
 
@@ -250,12 +297,16 @@ int main()
                        double c=sqrt(pow(xdistance,2)+pow(ydistance,2));
                        ydistance/=c;
                        xdistance/=c;
-                       bullet bullet(bulletTexture,ydistance*100,xdistance*100,monstr.getPosition());
+                       bullet bullet(bulletTexture,ydistance*200,xdistance*200,monstr.getPosition());
                        missiles.emplace_back(bullet);
                    }
                  }
                 //Move bullets
                  for(auto &missile : missiles)
+                 {
+                    missile.moveBullet(elapsed);
+                 }
+                 for(auto &missile : chmissiles)
                  {
                     missile.moveBullet(elapsed);
                  }
@@ -299,8 +350,25 @@ int main()
                         missiles.erase(missiles.begin()+itmis-1);
                         if(rand()%100>33)character.heart-=1;
                     }
-
                  }
+                 for(auto &missile :chmissiles )
+                 {  itmis++;
+                    sf::FloatRect mbounds = missile.getGlobalBounds();;
+
+                    for(auto &brick : bricks){
+                        sf::FloatRect bbounds = brick.getGlobalBounds();
+                        if (mbounds.intersects(bbounds)){
+                             chmissiles.erase(missiles.begin()+itmis-1);
+                        }
+                    }
+                     for(auto &monstr : monstra){
+                    sf::FloatRect bounds = monstr.getGlobalBounds();
+                    if (mbounds.intersects(bounds)){
+                        chmissiles.erase(missiles.begin()+itmis-1);
+                        int damage=monstr.takeDamage();
+                        std::cout<<damage<<std::endl;
+                    }
+                 }}
                 // spikes collision
                 for(int i = 0; i < (int)mspiks.size(); i++)
                 {
@@ -358,7 +426,27 @@ int main()
 
         // clear the window with black color
             window.clear(sf::Color::Black);
-        if(!game_on){
+        if(start_of_the_game&& !instructions){
+         window.draw(start);
+         window.draw(title);
+         if(sf::Mouse::getPosition(window).y<450 && sf::Mouse::getPosition(window).y>350
+                 &&sf::Mouse::getPosition(window).x>350 && sf::Mouse::getPosition(window).x<450){
+                    start.setFillColor(sf::Color::Magenta);
+              if(sf::Mouse::isButtonPressed(sf::Mouse::Left))instructions=true;
+         }else start.setFillColor(sf::Color::White);
+        }
+        if(start_of_the_game&& instructions){
+            window.draw(instruction);
+            start.setPosition(700,550);
+            window.draw(start);
+            if(sf::Mouse::getPosition(window).y<600 && sf::Mouse::getPosition(window).y>500
+                    &&sf::Mouse::getPosition(window).x>675 && sf::Mouse::getPosition(window).x<800){
+                        start.setFillColor(sf::Color::Magenta);
+                 if(sf::Mouse::isButtonPressed(sf::Mouse::Left))start_of_the_game=false;
+            }else start.setFillColor(sf::Color::White);
+           }
+
+        if(!game_on&& !start_of_the_game){
 
                 window.draw(welcome);
                 window.draw(diffEasy);
@@ -389,7 +477,7 @@ int main()
                         game_on=true;
                         stage(lvl,difficulty,&switch_s,brick, bricks, mspike, mspiks,&door,monstra,monster_t,spike,spiks);
                 }}}
-         if(game_on){
+         if(game_on&& !start_of_the_game){
 
         // draw everything here...
         window.draw(background);
@@ -403,6 +491,10 @@ int main()
             window.draw(spik);
         }
         for(auto &missile : missiles)
+        {
+            window.draw(missile);
+        }
+        for(auto &missile : chmissiles)
         {
             window.draw(missile);
         }
@@ -452,29 +544,44 @@ int main()
                     coins.emplace_back(coin);
                 }
                }}
-            else if(gameover == true && character.heart > 0){
-                if (h==false){
+            else if(gameover == true && character.heart > 0&& lvl==3){
                     window.clear(sf::Color::Black);
                     window.draw(win_s);
                     window.draw(next_stage);
                     window.draw(score_text);
-                    window.draw(hearts);}
-
-                if (h==true){
+                    window.draw(hearts);
+                    if(sf::Keyboard::isKeyPressed(sf::Keyboard::R)){
+                        game_on=false;
+                        character.heart+=3;
+                        window.clear(sf::Color::Black);
+                        stage(lvl,difficulty,&switch_s,brick, bricks, mspike, mspiks,&door,monstra,monster_t,spike,spiks);
+                        gameover = false;
+                        character.setPosition(800 - character.getGlobalBounds().width, 575 - character.getGlobalBounds().height);
+                        switch_s.on = false;
+                        door.open=false;
+                        switch_s.switch_on();
+                        door.doorOpen();
+                        score=0;
+                        score_text.setString("Score: " + std::to_string(score));
+                        coins.clear();
+                        for(int i = 0; i < 20; i++)
+                        {
+                            Coin coin(coin_t);
+                            coin.setPosition(rand()%(800-(int)coin.getGlobalBounds().width), rand()%(575-(int)coin.getGlobalBounds().height));
+                            coins.emplace_back(coin);
+                        }}}
+             else if (gameover == true && character.heart > 0){
                     window.clear(sf::Color::Black);
                     window.draw(heal);
                     window.draw(score_text);
                     window.draw(hearts);
-                    if(sf::Keyboard::isKeyPressed(sf::Keyboard::H)&&score>=10){
+                    if(sf::Keyboard::isKeyPressed(sf::Keyboard::H)&&score>=10&&character.heart<3){
                         score-=10;
                         character.heart++;
                         hearts.setTextureRect(sf::IntRect(0, 0, (192/3) * character.heart, 64));
                         std::cout<<character.heart;
-                    }}
-                    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)){
-                    h=true;
                     }
-                    if(sf::Keyboard::isKeyPressed(sf::Keyboard::N)){
+                    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)){
                         lvl++;
                         stage(lvl,difficulty,&switch_s,brick, bricks, mspike, mspiks,&door,monstra,monster_t,spike,spiks);
                         window.clear(sf::Color::Black);
@@ -493,10 +600,10 @@ int main()
                             coin.setPosition(rand()%(800-(int)coin.getGlobalBounds().width), rand()%(575-(int)coin.getGlobalBounds().height));
                             coins.emplace_back(coin);
                         }
-                        }
+                        }}
 
 
-        }
+
         window.display();
         }
 

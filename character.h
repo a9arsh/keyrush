@@ -11,7 +11,7 @@ public:
     float fall_velocity = 0;
     float t = 0;
     float t1=0;
-    int floor = 0;
+    float t2=0;
     int s_=false;
     int txtwidth;
     int txtheight;
@@ -30,4 +30,5 @@ public:
     void moveInDirection(const sf::Time &elapsed, const sf::Keyboard::Key &key);
     void runOrWalk();
     void standStill();
+    bool attack(sf::Time &time);
 };

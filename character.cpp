@@ -16,7 +16,7 @@ void Character::animate(sf::Time &elapsed)
 {
     sf::FloatRect hero_bounds = this->getGlobalBounds();
     // Check if object is not on the ground.
-    if(hero_bounds.top < 575 - hero_bounds.height - floor * 75 && onbrick==false)
+    if(hero_bounds.top < 575 - hero_bounds.height && onbrick==false)
     {
         t += elapsed.asSeconds();
         if(t >= 0.1)
@@ -137,4 +137,11 @@ void::Character::runOrWalk(){
 void::Character::standStill(){
     txtrow=2;
     txtcolumn=3;
+}
+bool::Character::attack(sf::Time &time){
+t2+=time.asSeconds();
+if (t2>3){
+    t2=0;
+    return true;}
+else return false;
 }

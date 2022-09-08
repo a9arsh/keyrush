@@ -47,3 +47,12 @@ bool::Monster::attack(sf::Time &elapsed){
 void::Monster::enableAttack(){
     atk=true;
 }
+bool::Monster::isHealthy(){
+    if(hp>=0)return false;
+    else return true;
+}
+int::Monster::takeDamage(){
+    int damage=rand()%5+1;
+    hp-=damage;
+    return damage;
+}
