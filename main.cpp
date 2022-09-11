@@ -160,7 +160,7 @@ int main()
                           "Avoid touching the monsters and obstacles.\n"
                           "On each lvl you can collect coins.\nCoins can be used to restore your hearts between the stages. \n"
                           "On higher difficulties some monsters will also shoot missiles at you.\n"
-                          "These missiles have 50% chance to hurt you,\n"
+                          "These missiles have 33% chance to hurt you,\n"
                           "but its better for you not to test your luck on them :D\n"
                           "Good Luck and Have Fun!!!!!");
     instruction.setFillColor(sf::Color::Yellow);
@@ -243,8 +243,8 @@ int main()
                 {   character.onbrick=false;}}
 
 
+
                     character.animate(elapsed);
-                    character.attack(elapsed);
                 // Move character
                 if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
                 {
@@ -262,19 +262,19 @@ int main()
                 {
                     character.moveInDirection(elapsed, sf::Keyboard::Right);
                 }
-                if(sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
+               /* if(sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
                 {
-                   if ( character.attack(elapsed)){
+                   if ( character.attack()){
                        double ydistance=sf::Mouse::getPosition(window).y-character.getPosition().y;
                        double xdistance=sf::Mouse::getPosition(window).x-character.getPosition().x;
                        double c=sqrt(pow(xdistance,2)+pow(ydistance,2));
                        ydistance/=c;
                        xdistance/=c;
-                       bullet bullet(bulletTexture,ydistance*200,xdistance*200,sf::Vector2f(sf::Mouse::getPosition(window)));
+                       bullet bullet(bulletTexture,ydistance*200,xdistance*200,character.getPosition());
                        chmissiles.emplace_back(bullet);
                        std::cout<<"pow"<<std::endl;
                    }
-                }
+                }*/
 
 
                 //Move spikes
@@ -335,40 +335,48 @@ int main()
                     door.open = true;
                     door.doorOpen();
                 }
-                //bulletcollision
-                 for(auto &missile :missiles )
-                 {  itmis++;
+                //bulletcollision //////////////////////////////////////////////fix//////////////////////////////////////////
+                /**/ for(auto &missile :missiles )
+                 {
                     sf::FloatRect mbounds = missile.getGlobalBounds();;
                     sf::FloatRect cbounds = character.getGlobalBounds();
                     for(auto &brick : bricks){
                         sf::FloatRect bbounds = brick.getGlobalBounds();
                         if (mbounds.intersects(bbounds)){
-                             missiles.erase(missiles.begin()+itmis-1);
+                             missiles.erase(missiles.begin()+itmis);
+
                         }
                     }
                     if (mbounds.intersects(cbounds)){
-                        missiles.erase(missiles.begin()+itmis-1);
+                        missiles.erase(missiles.begin()+itmis);
                         if(rand()%100>33)character.heart-=1;
                     }
-                 }
-                 for(auto &missile :chmissiles )
-                 {  itmis++;
+                    if(!mbounds.intersects(sf::FloatRect(0,0,800,600))){
+                        missiles.erase(missiles.begin()+itmis);
+                    }itmis++;
+                 }itmis=0;
+                /* for(auto &missile :chmissiles )
+                 {
                     sf::FloatRect mbounds = missile.getGlobalBounds();;
 
                     for(auto &brick : bricks){
                         sf::FloatRect bbounds = brick.getGlobalBounds();
                         if (mbounds.intersects(bbounds)){
-                             chmissiles.erase(missiles.begin()+itmis-1);
+                             chmissiles.erase(chmissiles.begin()+itmis);
                         }
                     }
                      for(auto &monstr : monstra){
                     sf::FloatRect bounds = monstr.getGlobalBounds();
                     if (mbounds.intersects(bounds)){
-                        chmissiles.erase(missiles.begin()+itmis-1);
+                        chmissiles.erase(chmissiles.begin()+itmis);
                         int damage=monstr.takeDamage();
                         std::cout<<damage<<std::endl;
                     }
-                 }}
+                    if(!mbounds.intersects(sf::FloatRect(0,0,800,600))){
+                        chmissiles.erase(chmissiles.begin()+itmis);
+                    }itmis++;
+                 }}itmis=0;
+                    */
                 // spikes collision
                 for(int i = 0; i < (int)mspiks.size(); i++)
                 {
@@ -494,10 +502,10 @@ int main()
         {
             window.draw(missile);
         }
-        for(auto &missile : chmissiles)
+        /*for(auto &missile : chmissiles)
         {
             window.draw(missile);
-        }
+        }*/
         for(auto &spik : mspiks)
         {
             window.draw(spik);
@@ -510,6 +518,9 @@ int main()
         for(auto &monstr : monstra)
         {
             window.draw(monstr);
+            /*if(!monstr.isHealthy()){
+              //delete monster
+            }*/
         }
         window.draw(character);
 
@@ -543,14 +554,20 @@ int main()
                     coin.setPosition(rand()%(800-(int)coin.getGlobalBounds().width), rand()%(575-(int)coin.getGlobalBounds().height));
                     coins.emplace_back(coin);
                 }
+                if(lvl!=3){
+                    character.speedx_=400;
+                    character.speedy_=400;
+                    character.setScale(0.5,0.5);
+                }
                }}
             else if(gameover == true && character.heart > 0&& lvl==3){
                     window.clear(sf::Color::Black);
                     window.draw(win_s);
-                    window.draw(next_stage);
+                    window.draw(restart_game);
                     window.draw(score_text);
                     window.draw(hearts);
                     if(sf::Keyboard::isKeyPressed(sf::Keyboard::R)){
+                        lvl=1;
                         game_on=false;
                         character.heart+=3;
                         window.clear(sf::Color::Black);
@@ -569,6 +586,11 @@ int main()
                             Coin coin(coin_t);
                             coin.setPosition(rand()%(800-(int)coin.getGlobalBounds().width), rand()%(575-(int)coin.getGlobalBounds().height));
                             coins.emplace_back(coin);
+                        }
+                        if(lvl!=3){
+                            character.speedx_=400;
+                            character.speedy_=400;
+                            character.setScale(0.5,0.5);
                         }}}
              else if (gameover == true && character.heart > 0){
                     window.clear(sf::Color::Black);
@@ -583,6 +605,12 @@ int main()
                     }
                     if(sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)){
                         lvl++;
+                        if(lvl==3){
+                            character.speedx_=200;
+                            character.speedy_=300;
+                            character.setScale(0.25,0.25);
+                        }
+
                         stage(lvl,difficulty,&switch_s,brick, bricks, mspike, mspiks,&door,monstra,monster_t,spike,spiks);
                         window.clear(sf::Color::Black);
                         gameover = false;

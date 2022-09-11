@@ -30,5 +30,5 @@ public:
     void moveInDirection(const sf::Time &elapsed, const sf::Keyboard::Key &key);
     void runOrWalk();
     void standStill();
-    bool attack(sf::Time &time);
+    bool attack();
 };

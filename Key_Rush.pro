@@ -4,6 +4,7 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += \
+        bullet.cpp \
         character.cpp \
         coin.cpp \
         door.cpp \
@@ -11,12 +12,12 @@ SOURCES += \
         monster.cpp \
         movingspike.cpp \
         spike.cpp \
+        stages.cpp \
         switch.cpp
 
 
-INCLUDEPATH += "C:/Users/Adharsh/Documents/SFML-2.5.1/include"
-
-LIBS += -L"C:/Users/Adharsh/Documents/SFML-2.5.1/lib"
+INCLUDEPATH += "C:/SFML-2.5.1/include"
+LIBS += -L"C:/SFML-2.5.1/lib"
 CONFIG(debug, debug|release){
     LIBS += -lsfml-audio-d -lsfml-graphics-d -lsfml-network-d -lsfml-system-d -lsfml-window-d
 } else {
@@ -24,6 +25,7 @@ CONFIG(debug, debug|release){
 }
 
 HEADERS += \
+    bullet.h \
     character.h \
     coin.h \
     door.h \

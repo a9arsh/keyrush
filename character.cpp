@@ -13,7 +13,7 @@ Character::Character(sf::Texture &texture)
 }
 
 void Character::animate(sf::Time &elapsed)
-{
+{   t2+=elapsed.asSeconds();
     sf::FloatRect hero_bounds = this->getGlobalBounds();
     // Check if object is not on the ground.
     if(hero_bounds.top < 575 - hero_bounds.height && onbrick==false)
@@ -128,19 +128,18 @@ void Character::moveInDirection(const sf::Time &elapsed, const sf::Keyboard::Key
 void::Character::runOrWalk(){
     if(walk){
         walk=false;
-        this->speedx_=400;}
+        this->speedx_*=2;}
     else if(!walk){
         walk=true;
-        this->speedx_=100;}
+        this->speedx_/=2;}
 }
 
 void::Character::standStill(){
     txtrow=2;
     txtcolumn=3;
 }
-bool::Character::attack(sf::Time &time){
-t2+=time.asSeconds();
-if (t2>3){
+bool::Character::attack(){
+if (t2>1){
     t2=0;
     return true;}
 else return false;
