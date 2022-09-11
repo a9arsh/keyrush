@@ -536,6 +536,12 @@ int main()
             window.draw(hearts);
             lvl=1;
             if(sf::Keyboard::isKeyPressed(sf::Keyboard::R)){
+
+                 if(lvl!=3){
+                     character.speedx_=400;
+                     character.speedy_=400;
+                     character.setScale(0.5,0.5);
+                }
                 game_on=false;
                 character.heart+=3;
                 window.clear(sf::Color::Black);
