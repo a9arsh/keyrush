@@ -22,25 +22,25 @@ int main()
 
     // Background
     sf::Texture background_texture;
-    background_texture.loadFromFile("C:/Users/user/OneDrive/Dokumenty/Key_Rush/background.png");
+    background_texture.loadFromFile("background.png");
     sf::Sprite background(background_texture);
     background.setScale(2.0, 2.0);
     background.setPosition(0, 0);
 
     // Character
     sf::Texture character_texture;
-    character_texture.loadFromFile("C:/Users/user/OneDrive/Dokumenty/Key_Rush/character1.png");
+    character_texture.loadFromFile("character1.png");
     Character character(character_texture);
 
 
     // Switch
     sf::Texture switch_t;
-    switch_t.loadFromFile("C:/Users/user/OneDrive/Dokumenty/Key_Rush/switch.png");
+    switch_t.loadFromFile("switch.png");
     Switch switch_s(switch_t);
 
     // Bricks
     sf::Texture brick_texture;
-    brick_texture.loadFromFile("C:/Users/user/OneDrive/Dokumenty/Key_Rush/brick.png");
+    brick_texture.loadFromFile("brick.png");
     brick_texture.setRepeated(true);
     std::vector<sf::Sprite> bricks;
     sf::Sprite brick;
@@ -49,7 +49,7 @@ int main()
 
     //spikes
     sf::Texture spikes;
-    spikes.loadFromFile("C:/Users/user/OneDrive/Dokumenty/Key_Rush/spike.png");
+    spikes.loadFromFile("spike.png");
     MovingSpike mspike(spikes);
     Spike spike(spikes);
 
@@ -60,17 +60,17 @@ int main()
 
     // Doors
     sf::Texture doors_texture;
-    doors_texture.loadFromFile("C:/Users/user/OneDrive/Dokumenty/Key_Rush/doors.png");
+    doors_texture.loadFromFile("doors.png");
     Door door(doors_texture);
 
     // Monster
     std::vector<Monster> monstra;
     sf::Texture monster_t;
-    monster_t.loadFromFile("C:/Users/user/OneDrive/Dokumenty/Key_Rush/monster.png");
+    monster_t.loadFromFile("monster.png");
     // Coins
     srand(time(nullptr));
     sf::Texture coin_t;
-    coin_t.loadFromFile("C:/Users/user/OneDrive/Dokumenty/Key_Rush/coin.png");
+    coin_t.loadFromFile("coin.png");
     std::vector<Coin> coins;
     for(int i = 0; i < 20; i++)
     {
@@ -82,17 +82,17 @@ int main()
     std::vector<bullet>missiles;
     std::vector<bullet>chmissiles;
     sf::Texture bulletTexture;
-    bulletTexture.loadFromFile("C:/Users/user/OneDrive/Dokumenty/Key_Rush/yellowball.jpg");
+    bulletTexture.loadFromFile("yellowball.jpg");
 
     // Hearts
     sf::Texture hearts_t;
-    hearts_t.loadFromFile("C:/Users/user/OneDrive/Dokumenty/Key_Rush/hearts.png");
+    hearts_t.loadFromFile("hearts.png");
     sf::Sprite hearts(hearts_t);
     hearts.setPosition(800 - hearts.getGlobalBounds().width,0);
 
     // Texts
     sf::Font font;
-    font.loadFromFile("C:/Users/user/OneDrive/Dokumenty/Key_Rush/arial.ttf");
+    font.loadFromFile("arial.ttf");
     int score = 0;
     sf::Text score_text;
     score_text.setFont(font);
@@ -111,14 +111,14 @@ int main()
     restart_game.setFillColor(sf::Color::White);
     restart_game.setCharacterSize(30);
     restart_game.setPosition(200, 400);
-    over_t.loadFromFile("C:/Users/user/OneDrive/Dokumenty/Key_Rush/gameover.png");
+    over_t.loadFromFile("gameover.png");
     sf::Sprite gameover_s(over_t);
     gameover_s.setPosition(0, 0);
     bool gameover = false;
 
     // Gameover
     sf::Texture win_t;
-    win_t.loadFromFile("C:/Users/user/OneDrive/Dokumenty/Key_Rush/youwin.png");
+    win_t.loadFromFile("youwin.png");
     sf::Sprite win_s(win_t);
     win_s.setPosition(0, 0);
 
