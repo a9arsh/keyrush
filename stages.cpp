@@ -303,8 +303,8 @@ if(stage==3){//to be changed
     // Monster
     sf::Texture monster_t;
     monster_t.loadFromFile("C:/Users/user/OneDrive/Dokumenty/Key_Rush/monster.png");
-    Monster monster1(txtmonst,sf::FloatRect(0,0,800,600),0,150,sf::Vector2f(0, 560));
-    Monster monster2(txtmonst,sf::FloatRect(200,0,350,600),0,100,sf::Vector2f(150, 125));
+    Monster monster1(txtmonst,sf::FloatRect(0,0,800,600),0,150,sf::Vector2f(0, 550));
+    Monster monster2(txtmonst,sf::FloatRect(200,0,350,600),0,100,sf::Vector2f(150, 120));
     monster1.setScale(0.25,0.25);
     monster2.setScale(0.25,0.25);
     Monster monster3(txtmonst,sf::FloatRect(0,0,800,600),-150,150,sf::Vector2f(300, 300));

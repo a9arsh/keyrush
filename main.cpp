@@ -581,6 +581,7 @@ int main()
                         door.open=false;
                         switch_s.switch_on();
                         door.doorOpen();
+                        score=0;
                         score_text.setString("Score: " + std::to_string(score));
                         coins.clear();
                         for(int i = 0; i < 20; i++)
