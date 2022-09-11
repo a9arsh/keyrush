@@ -43,7 +43,10 @@ if (stage==2){
 
 
     //moving spikes
-
+    int a=-20;
+    int b=50;
+    spike.setSpeed(a);
+    spike.setRange(b);
 
     spikes.clear();
     spike.setScale(0.05,0.05);
@@ -129,11 +132,15 @@ if (stage==1){
     bricks.emplace_back(brick);
 
     //standing spikes
+    localspikes.clear();
     localspike.changePosition(sf::Vector2f(25,25));
     localspike.setScale(0.05,-0.05);
     localspikes.emplace_back(localspike);
     //movingspikes
-    localspikes.clear();
+    int a=-20;
+    int b=50;
+    spike.setSpeed(a);
+    spike.setRange(b);
 
     spikes.clear();
     spike.setScale(0.05,0.05);
@@ -240,13 +247,13 @@ if(stage==3){//to be changed
 
 
     // moving spikes
-            int a=-5;
-            int b=20;
+
     spikes.clear();
-    spike.setScale(0.025,0.025);
+    int a=-5;
+    int b=20;
     spike.setSpeed(a);
     spike.setRange(b);
-
+    spike.setScale(0.025,0.025);
     // local spikes
     localspikes.clear();
     localspike.changePosition(sf::Vector2f(500,350));
@@ -296,7 +303,7 @@ if(stage==3){//to be changed
     // Monster
     sf::Texture monster_t;
     monster_t.loadFromFile("C:/Users/user/OneDrive/Dokumenty/Key_Rush/monster.png");
-    Monster monster1(txtmonst,sf::FloatRect(0,0,800,600),0,150,sf::Vector2f(0, 525));
+    Monster monster1(txtmonst,sf::FloatRect(0,0,800,600),0,150,sf::Vector2f(0, 560));
     Monster monster2(txtmonst,sf::FloatRect(200,0,350,600),0,100,sf::Vector2f(150, 125));
     monster1.setScale(0.25,0.25);
     monster2.setScale(0.25,0.25);

@@ -131,10 +131,11 @@ int main()
     next_stage.setPosition(200, 400);
     sf::Text heal;
     heal.setFont(font);
-    heal.setString("Before the next stage begins,\n you can buy hearts for collected points \n u can have max. 3 of them \n to buy a hearth for 10 points press H");
+    heal.setString("Before the next stage begins,\nyou can buy hearts for collected points"
+                   "\nto buy a hearth for 10 points press H\nThen press Enter to enter next stage");
     heal.setFillColor(sf::Color::White);
     heal.setCharacterSize(30);
-    heal.setPosition(200, 400);
+    heal.setPosition(200, 200);
     //Program start
     sf::Text start;
     start.setFont(font);
@@ -170,7 +171,7 @@ int main()
     //Game start
     sf::Text welcome;
     welcome.setFont(font);
-    welcome.setString("Choose a difficulty: \nHarder game modes have more enemies \nand are more challanging ");
+    welcome.setString("Choose a difficulty: \nHarder game modes have more enemies \nand are more challanging. \nIf you chose a difficulty press Enter. ");
     welcome.setFillColor(sf::Color::White);
     welcome.setCharacterSize(30);
     welcome.setPosition(150, 100);
@@ -335,7 +336,7 @@ int main()
                     door.open = true;
                     door.doorOpen();
                 }
-                //bulletcollision //////////////////////////////////////////////fix//////////////////////////////////////////
+                //bulletcollision
                 /**/ for(auto &missile :missiles )
                  {
                     sf::FloatRect mbounds = missile.getGlobalBounds();;
@@ -554,11 +555,7 @@ int main()
                     coin.setPosition(rand()%(800-(int)coin.getGlobalBounds().width), rand()%(575-(int)coin.getGlobalBounds().height));
                     coins.emplace_back(coin);
                 }
-                if(lvl!=3){
-                    character.speedx_=400;
-                    character.speedy_=400;
-                    character.setScale(0.5,0.5);
-                }
+
                }}
             else if(gameover == true && character.heart > 0&& lvl==3){
                     window.clear(sf::Color::Black);
@@ -568,6 +565,12 @@ int main()
                     window.draw(hearts);
                     if(sf::Keyboard::isKeyPressed(sf::Keyboard::R)){
                         lvl=1;
+                        if(lvl!=3){
+                            character.speedx_=400;
+                            character.speedy_=400;
+                            character.setScale(0.5,0.5);
+                        }
+
                         game_on=false;
                         character.heart+=3;
                         window.clear(sf::Color::Black);
@@ -578,7 +581,6 @@ int main()
                         door.open=false;
                         switch_s.switch_on();
                         door.doorOpen();
-                        score=0;
                         score_text.setString("Score: " + std::to_string(score));
                         coins.clear();
                         for(int i = 0; i < 20; i++)
@@ -587,11 +589,7 @@ int main()
                             coin.setPosition(rand()%(800-(int)coin.getGlobalBounds().width), rand()%(575-(int)coin.getGlobalBounds().height));
                             coins.emplace_back(coin);
                         }
-                        if(lvl!=3){
-                            character.speedx_=400;
-                            character.speedy_=400;
-                            character.setScale(0.5,0.5);
-                        }}}
+                        }}
              else if (gameover == true && character.heart > 0){
                     window.clear(sf::Color::Black);
                     window.draw(heal);
@@ -610,6 +608,11 @@ int main()
                             character.speedy_=300;
                             character.setScale(0.25,0.25);
                         }
+                        if(lvl!=3){
+                            character.speedx_=400;
+                            character.speedy_=400;
+                            character.setScale(0.5,0.5);
+                        }
 
                         stage(lvl,difficulty,&switch_s,brick, bricks, mspike, mspiks,&door,monstra,monster_t,spike,spiks);
                         window.clear(sf::Color::Black);
@@ -619,7 +622,6 @@ int main()
                         door.open=false;
                         switch_s.switch_on();
                         door.doorOpen();
-                        score=0;
                         score_text.setString("Score: " + std::to_string(score));
                         coins.clear();
                         for(int i = 0; i < 20; i++)
